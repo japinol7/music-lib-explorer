@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Music Library - Songs</h1>
+
+    <div class="body">
+        <br>
+        <form class="music-lib-form-class" id="music_lib_form"
+              action="/music-lib-songs" method="POST" style="background:#b2c8f6;max-width: 700px;">
+            <div class="row">
+                    <div class="col">
+                        <p><strong>Search Songs <br> </strong> </p>
+                        <p><strong>Title to search</strong></p>
+                        <input name="music_song_title" id="music_song_title" type="text"
+                               placeholder="Eg: Wine Red No Kokoro">
+                        <p><strong>Match Song name method</strong></p>
+                        <select name="music_song_title_method" id="music_song_title_method" type="text" required>
+                            <option value="">&lt;Select a method&gt;</option>
+                            <option value="song_exact_match">Exact Match</option>
+                            <option value="song_starts_with">Starts with specified text</option>
+                            <option value="song_contains" selected>Contains specified text</option>
+                        </select>
+                        <p><strong>Start date</strong></p>
+                        <input name="music_song_start_date" id="music_song_start_date" type="text"
+                               placeholder="Eg: 2021-01-01">
+                        <p><strong>End date</strong></p>
+                        <input name="music_song_end_date" id="music_song_end_date" type="text"
+                               placeholder="Eg: 2021-01-02">
+                        <p><strong>Max. songs to fetch (max. 60000)</strong></p>
+                        <input name="music_song_limit" id="music_song_limit" type="number"
+                               placeholder="Eg: 5000" value="200" required min="1" max="60000">
+                    </div>
+                    <div class="col">
+                        <p style="color:transparent">.</p> <p style="color:transparent">.</p><p style="color:transparent">.</p>
+                        <p><strong>Album Artist contains</strong></p>
+                        <input name="music_album_artist" id="music_album_artist" type="text"
+                               placeholder="Eg: Anzenchitai">
+                        <p><strong>Album contains</strong></p>
+                        <input name="music_album_name" id="music_album_name" type="text"
+                               placeholder="Eg: Bringing It All Back Home">
+                        <p><strong>Composer contains</strong></p>
+                        <input name="music_composer" id="music_composer" type="text"
+                               placeholder="Eg: Mozart">
+                        <p><strong>Artist contains</strong></p>
+                        <input name="music_artist_name" id="music_artist_name" type="text"
+                               placeholder="Eg: Anzenchitai">
+                        <p><strong>Genre is</strong></p>
+                        <select name="music_genre" id="music_genre" type="text" required>
+                            <option value="All" selected>All</option>
+                            <option value="Alternative">Alternative</option>
+                            <option value="Blues">Blues</option>
+                            <option value="Celtic">Celtic</option>
+                            <option value="Children's Music">Children's Music</option>
+                            <option value="Christmas">Christmas</option>
+                            <option value="Classical">Classical</option>
+                            <option value="Classical Crossover">Classical Crossover</option>
+                            <option value="Country">Country</option>
+                            <option value="Disco">Disco</option>
+                            <option value="Folk">Folk</option>
+                            <option value="Folk rock">Folk rock</option>
+                            <option value="Folk trad">Folk trad</option>
+                            <option value="Gospel">Gospel</option>
+                            <option value="Hard Rock">Hard Rock</option>
+                            <option value="Jazz">Jazz</option>
+                            <option value="Jazz vocal">Jazz vocal</option>
+                            <option value="Metal">Metal</option>
+                            <option value="New Age">New Age</option>
+                            <option value="Pop">Pop</option>
+                            <option value="Pop dynamic">Pop dynamic</option>
+                            <option value="R&B/Soul">R&B/Soul</option>
+                            <option value="Reggae">Reggae</option>
+                            <option value="Rock">Rock</option>
+                            <option value="Rock neoclassical">Rock neoclassical</option>
+                            <option value="Singer-Songwriter">Singer-Songwriter</option>
+                            <option value="Soundtrack">Soundtrack</option>
+                            <option value="Spoken Word">Spoken Word</option>
+                            <option value="Strings crossover">Strings crossover</option>
+                        </select>
+                        <p><strong>Order by</strong></p>
+                        <select name="music_song_order_by" id="music_song_order_by" type="text" required>
+                            <option value="album,songName">Album, Song Name</option>
+                            <option value="artist,album,disc,track" selected>Album Artist, Album, Disc, Track</option>
+                            <option value="album,disc,track">Album, Disc, Track</option>
+                            <option value="songName">Song Name</option>
+                            <option value="artist,songName">Album Artist, Song Name</option>
+                            <option value="artist,album,songName">Album Artist, Album, Song Name</option>
+                            <option value="plays,songName">Plays desc, Song</option>
+                            <option value="duration,songName">Duration desc, Song</option>
+                            <option value="year,songName">Year, Song</option>
+                        </select>
+                    </div>
+            </div>
+            <button class="submit-music-songs">Submit</button>
+            <button type="button" onclick="toggleDisplay()">Show/Hide Import Form</button>
+        </form>
+
+        <form class="music-lib-import-data-form-class hide-on-condition"
+              id="music_lib_import_data_form"
+              action="/music-lib-songs" method="POST" style="background:#ffdf7d;max-width: 700px;display:none;">
+            <p><strong>Import music library data <br> </strong> </p>
+            <p><strong>Only if it is not already imported in your system</strong></p>
+            <input name="import_data_method" id="import_data_method" type="text" value="all" style="display:none">
+            <button class="import-data" style="background:#ffa04c">Import data</button>
+        </form>
+    </div>
+
+    <div class="body">
+        <br>
+        <div class="music-lib-info">
+            <p>
+                <strong> Fetch songs from music library database.</strong> <br>
+            </p>
+            <p>
+                {%  if form_executed == 'music_lib_form' %}
+                        # Songs which title <strong>{{ songs[0] and songs[0][0] or '--' }}</strong> ,
+                    match method: <strong>{{ songs[0] and songs[0][4] or '' }}</strong> ,
+                    album artist: <strong>{{ songs[0] and songs[0][11] or '--' }}</strong> ,
+                    album: <strong>{{ songs[0] and songs[0][7] or '--' }}</strong> ,
+                    composer: <strong>{{ songs[0] and songs[0][9] or '--' }}</strong> ,
+                    artist: <strong>{{ songs[0] and songs[0][6] or '--' }}</strong> ,
+                    genre: <strong>{{ songs[0] and songs[0][10] or '--' }}</strong> ,
+                    limit: <strong>{{ songs[0] and songs[0][1] or '--' }}</strong> ,
+                    dates: (<strong>{{ songs[0] and songs[0][2] or '--' }}, {{ songs[0] and songs[0][3] or '--' }}</strong>) ,
+                    order by: <strong>{{ songs[0] and songs[0][5] or '--' }}</strong>
+                    matches found in
+                {% else %}
+                        # Songs which title that starts with <strong> __ </strong>
+                {% endif %}
+                <span >our database</span>
+                :
+                <strong>{{ songs[1] }}</strong> of <strong>{{ songs[0] and songs[0][8] or 0}}</strong>.
+            </p>
+        </div>
+
+        {% if songs and songs[4]['error'] %}
+            <div class="music-list-api-call-error">
+                <br>
+                <p><strong>API Error:  {{ songs[4]['error'] }} </strong> </p>
+                <br>
+            </div>
+        {% else %}
+            <div class="music-list-api-call-warning">
+                <br>
+                <p><strong>Disclaimer: Sorry, the Play button will only play songs that are at the same location in your local file system. <br>
+                           This is not an audio streaming service.</strong> </p>
+                <br>
+            </div>
+        {% endif %}
+
+        <table class="mui-table mui-table--bordered">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Album Artist</th>
+                <th>Album</th>
+                <th>Disc #</th>
+                <th>Track #</th>
+                <th>Song</th>
+                <th>Genre</th>
+                <th>Artist</th>
+                <th>Duration</th>
+                <th>Composer</th>
+                <th>Year</th>
+                <th>Grouping</th>
+                <th>Duration (s)</th>
+                <th>Size</th>
+                <th>Date Released</th>
+                <th></th>
+                <th>Bit Rate</th>
+                <th>Sample rate</th>
+                <th>Work</th>
+                <th>Mov Name</th>
+                <th>Mov #</th>
+                <th>Mov Count</th>
+                <th>Plays</th>
+                <th>Comments</th>
+                <th>Date Added</th>
+                <th>Location</th>
+                <th>Is UserAdded</th>
+            </tr>
+            </thead>
+            {% if songs and songs[3] %}
+                <tbody>
+                {% for item in songs[3] %}
+                    <tr>
+                        <td>{{ item.track_id }}</td>
+                        <td>{{ item.album.artist }}</td>
+                        <td>{{ item.album.name }}</td>
+                        <td>{{ item.disc_number }}</td>
+                        <td>{{ item.track_number }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.genre }}</td>
+                        <td>{{ item.artist }}</td>
+                        <td>{{ item.duration_rep }}</td>
+                        <td>{{ item.composer }}</td>
+                        <td>{{ item.year }}</td>
+                        <td>{{ item.grouping }}</td>
+                        <td>{{ item.duration }}</td>
+                        <td>{{ item.size }}</td>
+                        <td>{{ item.date_released }}</td>
+                        <td>
+                            <form action="/music-lib-songs" id="music_song_play_form" method="POST">
+                                <input id="music_song_location" name="music_song_location" type="hidden"
+                                       value="{{ item.location }}">
+                                <button type="submit">Play</button>
+                            </form>
+                        </td>
+                        <td>{{ item.bit_rate }}</td>
+                        <td>{{ item.sample_rate }}</td>
+                        <td>{{ item.work }}</td>
+                        <td>{{ item.mov_name }}</td>
+                        <td>{{ item.mov_number }}</td>
+                        <td>{{ item.mov_count }}</td>
+                        <td>{{ item.plays }}</td>
+                        <td>{{ item.comments }}</td>
+                        <td>{{ item.date_added }}</td>
+                        <td>{{ item.location }}</td>
+                        <td>{{ item.is_user_added }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+		    {% else %}
+                <tbody>
+                <tr>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                </tr>
+                </tbody>
+		    {% endif %}
+        </table>
+    </div>
+{% endblock %}

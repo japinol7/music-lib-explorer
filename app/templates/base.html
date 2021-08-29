@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <script type="text/javascript">
+        function toggleDisplay() {
+            console.log("toggleDisplay pressed...")
+            let el = document.querySelector(".hide-on-condition");
+            if (el == null) {
+                return
+            }
+            if (el.style.display != 'none') {
+                el.style.display = 'none'
+            } else {
+                el.style.display = 'block'
+            }
+    }
+    </script>
+        <title>Music Library Metadata Explorer</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" type="text/css"/>
+        <script src="//cdn.muicss.com/mui-0.9.39/js/mui.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/css/form.css">
+        <link rel="stylesheet" href="../static/css/site.css">
+        <link rel="stylesheet" href="../static/css/index.css">
+        <link rel="stylesheet" href="../static/css/about.css">
+    </head>
+
+    <body>
+        <div class="mui-panel">
+            <button class="mui-btn mui-btn--raised"><a href="/index">Home</a></button>
+            <button class="mui-btn mui-btn--raised"><a href="/music-lib-songs">Songs</a></button>
+            <button class="mui-btn mui-btn--raised"><a href="/music-lib-albums">Albums</a></button>
+            <button class="mui-btn mui-btn--raised"><a href="/about">About</a></button>
+            <img src="../static/img/logo_japinol.png" style="height: 20px"
+                 alt="logo_japinol.png">
+        </div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Music Library - Albums</h1>
+
+    <div class="body">
+        <br>
+        <form class="music-lib-form-class" id="music_lib_form"
+              action="/music-lib-albums" method="POST" style="background:#b2c8f6;max-width: 700px;">
+            <div class="row">
+                    <div class="col">
+                        <p><strong>Search Albums <br> </strong> </p>
+                        <p><strong>Title to search</strong></p>
+                        <input name="music_album_name" id="music_album_name" type="text"
+                               placeholder="Eg: Bringing It All Back Home">
+                        <p><strong>Match Album name method</strong></p>
+                        <select name="music_album_title_method" id="music_album_title_method" type="text" required>
+                            <option value="">&lt;Select a method&gt;</option>
+                            <option value="album_exact_match">Exact Match</option>
+                            <option value="album_starts_with">Starts with specified text</option>
+                            <option value="album_contains" selected>Contains specified text</option>
+                        </select>
+                        <p><strong>Start date</strong></p>
+                        <input name="music_album_start_date" id="music_album_start_date" type="text"
+                               placeholder="Eg: 2021-01-01">
+                        <p><strong>End date</strong></p>
+                        <input name="music_album_end_date" id="music_album_end_date" type="text"
+                               placeholder="Eg: 2021-01-02">
+                        <p><strong>Max. albums to fetch (max. 30000)</strong></p>
+                        <input name="music_album_limit" id="music_album_limit" type="number"
+                               placeholder="Eg: 5000" value="100" required min="1" max="30000">
+                    </div>
+                    <div class="col">
+                        <p style="color:transparent">.</p> <p style="color:transparent">.</p><p style="color:transparent">.</p>
+                        <p><strong>Album Artist contains</strong></p>
+                        <input name="music_album_artist" id="music_album_artist" type="text"
+                               placeholder="Eg: Anzenchitai">
+                        <p><strong>Composer contains</strong></p>
+                        <input name="music_composer" id="music_composer" type="text"
+                               placeholder="Eg: Mozart">
+                        <p><strong>Artist contains</strong></p>
+                        <input name="music_artist_name" id="music_artist_name" type="text"
+                               placeholder="Eg: Anzenchitai">
+                        <p><strong>Genre is</strong></p>
+                        <select name="music_genre" id="music_genre" type="text" required>
+                            <option value="All" selected>All</option>
+                            <option value="Alternative">Alternative</option>
+                            <option value="Blues">Blues</option>
+                            <option value="Celtic">Celtic</option>
+                            <option value="Children's Music">Children's Music</option>
+                            <option value="Christmas">Christmas</option>
+                            <option value="Classical">Classical</option>
+                            <option value="Classical Crossover">Classical Crossover</option>
+                            <option value="Country">Country</option>
+                            <option value="Disco">Disco</option>
+                            <option value="Folk">Folk</option>
+                            <option value="Folk rock">Folk rock</option>
+                            <option value="Folk trad">Folk trad</option>
+                            <option value="Gospel">Gospel</option>
+                            <option value="Hard Rock">Hard Rock</option>
+                            <option value="Jazz">Jazz</option>
+                            <option value="Jazz vocal">Jazz vocal</option>
+                            <option value="Metal">Metal</option>
+                            <option value="New Age">New Age</option>
+                            <option value="Pop">Pop</option>
+                            <option value="Pop dynamic">Pop dynamic</option>
+                            <option value="R&B/Soul">R&B/Soul</option>
+                            <option value="Reggae">Reggae</option>
+                            <option value="Rock">Rock</option>
+                            <option value="Rock neoclassical">Rock neoclassical</option>
+                            <option value="Singer-Songwriter">Singer-Songwriter</option>
+                            <option value="Soundtrack">Soundtrack</option>
+                            <option value="Spoken Word">Spoken Word</option>
+                            <option value="Strings crossover">Strings crossover</option>
+                        </select>
+                        <p><strong>Order by</strong></p>
+                        <select name="music_album_order_by" id="music_album_order_by" type="text" required>
+                            <option value="albumName">album Name</option>
+                            <option value="artist,albumName" selected>Album Artist, album Name</option>
+                            <option value="duration,albumName">Duration desc, album</option>
+                            <option value="year,albumName">Year, album</option>
+                        </select>
+                    </div>
+            </div>
+            <button class="submit-music-albums">Submit</button>
+            <button type="button" onclick="toggleDisplay()">Show/Hide Import Form</button>
+        </form>
+
+        <form class="music-lib-import-data-form-class hide-on-condition"
+              id="music_lib_import_data_form"
+              action="/music-lib-albums" method="POST" style="background:#ffdf7d;max-width: 700px;display:none;">
+            <p><strong>Import music library data <br> </strong> </p>
+            <p><strong>Only if it is not already imported in your system</strong></p>
+            <input name="import_data_method" id="import_data_method" type="text" value="all" style="display:none">
+            <button class="import-data" style="background:#ffa04c">Import data</button>
+        </form>
+    </div>
+
+    <div class="body">
+        <br>
+        <div class="music-lib-info">
+            <p>
+                <strong> Fetch albums from music library database.</strong> <br>
+            </p>
+            <p>
+                {%  if form_executed == 'music_lib_form' %}
+                        # albums which title <strong>{{ albums[0] and albums[0][0] or '--' }}</strong> ,
+                    match method: <strong>{{ albums[0] and albums[0][4] or '' }}</strong> ,
+                    album artist: <strong>{{ albums[0] and albums[0][11] or '--' }}</strong> ,
+                    composer: <strong>{{ albums[0] and albums[0][9] or '--' }}</strong> ,
+                    artist: <strong>{{ albums[0] and albums[0][6] or '--' }}</strong> ,
+                    genre: <strong>{{ albums[0] and albums[0][10] or '--' }}</strong> ,
+                    limit: <strong>{{ albums[0] and albums[0][1] or '--' }}</strong> ,
+                    dates: (<strong>{{ albums[0] and albums[0][2] or '--' }}, {{ albums[0] and albums[0][3] or '--' }}</strong>) ,
+                    order by: <strong>{{ albums[0] and albums[0][5] or '--' }}</strong>
+                    matches found in
+                {% else %}
+                        # albums which title that starts with <strong> __ </strong>
+                {% endif %}
+                <span >our database</span>
+                :
+                <strong>{{ albums[1] }}</strong> of <strong>{{ albums[0] and albums[0][8] or 0}}</strong>.
+            </p>
+        </div>
+
+        {% if albums and albums[4]['error'] %}
+            <div class="music-list-api-call-error">
+                <br>
+                <p><strong>API Error:  {{ albums[4]['error'] }} </strong> </p>
+                <br>
+            </div>
+        {% endif %}
+
+        <table class="mui-table mui-table--bordered">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Album Artist</th>
+                <th>Album</th>
+                <th>Genre</th>
+                <th>Duration</th>
+                <th>Year min</th>
+                <th>Year max</th>
+                <th>Tracks</th>
+                <th>Duration (s)</th>
+                <th>Artist</th>
+                <th>Composer</th>
+            </tr>
+            </thead>
+            {% if albums and albums[3] %}
+                <tbody>
+                {% for item in albums[3] %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.artist }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.genre }}</td>
+                        <td>{{ item.duration_rep }}</td>
+                        <td>{{ item.year }}</td>
+                        <td>{{ item.year_max }}</td>
+                        <td>{{ item.track_count }}</td>
+                        <td>{{ item.duration }}</td>
+                        <td>{{ item.artist }}</td>
+                        <td>{{ item.composer }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+		    {% else %}
+                <tbody>
+                <tr>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>
+                </tr>
+                </tbody>
+		    {% endif %}
+        </table>
+    </div>
+{% endblock %}
