@@ -1,4 +1,5 @@
 from sqlalchemy.orm import joinedload
+from sqlalchemy.sql.expression import false, true
 
 from app.data import session_factory
 from app.data.models.song import Song
@@ -13,7 +14,7 @@ def get_total_music_songs():
 def get_music_songs(all_songs=False, name=None, artist=None, album=None, album_artist=None,
                     composer=None, genre=None,
                     limit=None, start_date=None, end_date=None,
-                    song_match_method=None, order_by=None):
+                    song_match_method=None, song_user_added=None, order_by=None):
 
     # noinspection PyComparisonWithNone
     session = session_factory.create_session()
@@ -33,6 +34,11 @@ def get_music_songs(all_songs=False, name=None, artist=None, album=None, album_a
         songs = songs.filter(Song.name.startswith(name))
     elif song_match_method == 'song_exact_match':
         songs = songs.filter(Song.name == name)
+
+    if song_user_added == 'Added by user':
+        songs = songs.filter(Song.is_user_added == true())
+    elif song_user_added == 'Automatically added':
+        songs = songs.filter(Song.is_user_added == false())
 
     if artist:
         songs = songs.filter(Song.artist.contains(artist))

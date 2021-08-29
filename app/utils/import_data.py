@@ -49,6 +49,12 @@ def __get_dataset_from_csv():
     return CsvDataset(data).get_grouped(config.COLUMN_TO_GROUP_BY)
 
 
+def __get_dataset_from_json():
+    with open(config.DATASET_FILE, 'r', encoding='utf8') as fin:
+        data = fin.read()
+    return CsvDataset(data).get_grouped(config.COLUMN_TO_GROUP_BY)
+
+
 def __get_dataset_from_xml():
     with open(config.DATASET_FILE, 'r', encoding='utf8') as fin:
         data = fin.read()
@@ -65,6 +71,11 @@ def __import_music_songs():
         dataset = __get_dataset_from_csv()
     elif config.DATASET_SOURCE_FORMAT == config.DATASET_SOURCE_XML:
         dataset = __get_dataset_from_xml()
+    elif config.DATASET_SOURCE_FORMAT == config.DATASET_SOURCE_JSON:
+        dataset = __get_dataset_from_json()
+    else:
+        raise ImportDataException(f"Internal Error extracting database files. "
+                                  f"Source Format not supported: {config.DATASET_SOURCE_FORMAT}")
 
     count_albums = 0
     count_songs = 0

@@ -34,9 +34,10 @@ def music_lib_songs():
         start_date = request.form.get('music_song_start_date')
         end_date = request.form.get('music_song_end_date') or start_date
         song_match_method = request.form.get('music_song_title_method')
+        song_user_added = request.form.get('music_song_user_added')
         order_by = request.form.get('music_song_order_by')
         songs = get_music_songs(name, artist, album, album_artist, composer, genre, limit,
-                                start_date, end_date, song_match_method, order_by)
+                                start_date, end_date, song_match_method, song_user_added, order_by)
         form_executed = 'music_lib_form'
     elif request.method == 'POST' and 'import_data_method' in request.form:
         import_data.import_if_empty()
@@ -55,19 +56,20 @@ def music_lib_songs():
 
 
 def get_music_songs(name, artist, album, album_artist, composer, genre, limit,
-                    start_date, end_date, song_match_method, order_by):
+                    start_date, end_date, song_match_method, song_user_added, order_by):
     error = ''
     songs = []
     if data_service.is_music_lib_imported():
         songs = song_service.get_music_songs(all_songs=False, name=name, artist=artist, album=album,
                                              album_artist=album_artist, composer=composer, genre=genre,
                                              limit=limit, start_date=start_date, end_date=end_date,
-                                             song_match_method=song_match_method, order_by=order_by)
+                                             song_match_method=song_match_method, song_user_added=song_user_added,
+                                             order_by=order_by)
     else:
         error = 'There is no data on the database. Please, import some data.'
 
     music_gen_data = {}
     return ((name, limit, start_date, end_date, song_match_method, order_by,
              artist, album, total_songs or song_service.get_total_music_songs(),
-             composer, genre, album_artist),
+             composer, genre, album_artist, song_user_added),
             len(songs), music_gen_data, songs, {'error': error})

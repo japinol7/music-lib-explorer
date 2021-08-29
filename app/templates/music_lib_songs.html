@@ -29,9 +29,14 @@
                         <p><strong>Max. songs to fetch (max. 60000)</strong></p>
                         <input name="music_song_limit" id="music_song_limit" type="number"
                                placeholder="Eg: 5000" value="200" required min="1" max="60000">
+                        <p><strong>Is added auto. or by user</strong></p>
+                        <select name="music_song_user_added" id="music_song_user_added"  type="text" required>
+                            <option value="Added by user">Added by user</option>
+                            <option value="Automatically added" selected>Automatically added</option>
+                        </select>
                     </div>
                     <div class="col">
-                        <p style="color:transparent">.</p> <p style="color:transparent">.</p><p style="color:transparent">.</p>
+                        <p style="color:transparent">.</p>
                         <p><strong>Album Artist contains</strong></p>
                         <input name="music_album_artist" id="music_album_artist" type="text"
                                placeholder="Eg: Anzenchitai">
@@ -120,6 +125,7 @@
                     artist: <strong>{{ songs[0] and songs[0][6] or '--' }}</strong> ,
                     genre: <strong>{{ songs[0] and songs[0][10] or '--' }}</strong> ,
                     limit: <strong>{{ songs[0] and songs[0][1] or '--' }}</strong> ,
+                    added by: <strong>{{ songs[0] and songs[0][12] or '--' }}</strong> ,
                     dates: (<strong>{{ songs[0] and songs[0][2] or '--' }}, {{ songs[0] and songs[0][3] or '--' }}</strong>) ,
                     order by: <strong>{{ songs[0] and songs[0][5] or '--' }}</strong>
                     matches found in
