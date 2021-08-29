@@ -1,3 +1,4 @@
+from collections import Counter
 import logging
 from zipfile import ZipFile
 
@@ -87,6 +88,9 @@ def __import_music_songs():
         album = Album()
         album.name = rows_list[0]['album']
         album.artist = rows_list[0]['album_artist'] if rows_list[0]['album_artist'] else None
+        album.disc_count_total = int(rows_list[0]['disc_count']) if rows_list[0]['disc_count'] else 0
+        album.track_count_total = int(rows_list[0]['track_count']) if rows_list[0]['track_count'] else 0
+        track_count_total = Counter()
         album.year_max = max([x['year'] for x in rows_list])
         album.year_min = min([x['year'] for x in rows_list])
         album.year = album.year_min
@@ -106,11 +110,12 @@ def __import_music_songs():
             song.name = row['name']
             song.album = album
             song.artist = row['artist']
-            song.disc_number = row['disc_number']
-            song.disc_count = row['disc_count']
-            song.track_number = row['track_number']
-            song.track_count = row['track_count']
-            song.duration = row['time'] and int(row['time']) or None
+            song.disc_number = int(row['disc_number']) if row['disc_number'] else 0
+            song.disc_count = int(row['disc_count']) if row['disc_count'] else 0
+            song.track_number = int(row['track_number']) if row['track_number'] else 0
+            song.track_count = int(row['track_count']) if row['track_count'] else 0
+            track_count_total[song.disc_number] = song.track_count
+            song.duration = row['time'] and int(row['time']) or 0
             song.duration = song.duration if FORMAT != 'xml' else song.duration // 1000
             song.duration_rep = time_seconds_format_to_min_sec(song.duration)
             song.size = row['size']
@@ -169,6 +174,8 @@ def __import_music_songs():
             album.track_count = album_track_count
 
         album.artist_tracks = config.DELIMITER.join(list(artist_tracks))
+        album.tracks_on_discs = str(dict(sorted(track_count_total.items())))
+        album.track_count_total = sum(track_count_total.values())
         album.genre = ', '.join(list(genre))
         album.genre_internal = ', '.join(list(genre_internal))
         album.composer = config.DELIMITER.join(list(composer))

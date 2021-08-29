@@ -145,6 +145,9 @@
                 <th>Duration (s)</th>
                 <th>Artist</th>
                 <th>Composer</th>
+                <th>Total tracks</th>
+                <th>Total discs</th>
+                <th>Tracks on discs</th>
             </tr>
             </thead>
             {% if albums and albums[3] %}
@@ -162,6 +165,9 @@
                         <td>{{ item.duration }}</td>
                         <td>{{ item.artist }}</td>
                         <td>{{ item.composer }}</td>
+                        <td>{{ item.track_count_total }}</td>
+                        <td>{{ item.disc_count_total }}</td>
+                        <td>{{ item.tracks_on_discs }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -170,7 +176,8 @@
                 <tr>
                         <td></td>     <td></td>     <td></td>     <td></td>
                         <td></td>     <td></td>     <td></td>     <td></td>
-                        <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>
                 </tr>
                 </tbody>
 		    {% endif %}
