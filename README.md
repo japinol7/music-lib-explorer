@@ -13,6 +13,14 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 	Python requires: 3.8 or greater.
 
 
+## Screenshots
+
+<img src="screenshots/screenshot1.png"> <br/> <br/>
+<img src="screenshots/screenshot2.png"> <br/> <br/>
+<img src="screenshots/screenshot3.png"> <br/> <br/>
+<img src="screenshots/screenshot4.png"> <br/>
+
+
 **To make this web server app to work in your local environment**
 
 	Do this:
