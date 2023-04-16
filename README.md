@@ -10,7 +10,7 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 	author_nickname: japinol
 	author_gitHub: japinol7
 	author_twitter: @japinol
-	Python requires: 3.8 or greater.
+	Python requires: 3.10 or greater.
 
 
 ## Screenshots
