@@ -30,7 +30,7 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 	    4. $ flask run
 	    5. Open the website indicated in the console in your browser.
 	       Example: http://127.0.0.1:5000/
-	    6. To have some demo data, the first time you must import the music data to the database:
+	    6. To have some demo data, the first time you must import the music data into the database:
 	       6. 1. Press the [Songs] button
 	       6. 2. Press the [Show/Hide Import Form] button
 	       6. 3. Press the [Import data] button
