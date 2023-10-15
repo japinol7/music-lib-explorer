@@ -11,6 +11,9 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 	author_gitHub: japinol7
 	author_twitter: @japinol
 	Python requires: 3.10 or greater.
+	Python versions tested: 
+        > 3.10.10 64bits under Windows 11
+        > 3.11.5 64bits under Windows 11
 
 
 ## Screenshots

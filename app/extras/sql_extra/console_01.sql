@@ -33,12 +33,12 @@ select name, track_count from album order by name;
 ------------------------------------------------------------------------------
 select count(id) count from song;
 -----
---  > R: 55846
+--  > R: 56362
 
 --------------------
 select count(id) count from album;
 -----
---  > R: 4368
+--  > R: 4418
 
 --
 -- \Music\iTunes\iTunes Media\Music
@@ -58,7 +58,7 @@ select genre from song
 -- Classical crossover
 -- Country
 -- Disco
--- Electronica
+-- Electronic
 -- Folk
 -- Folk rock
 -- Folk trad
