@@ -33,12 +33,12 @@ select name, track_count from album order by name;
 ------------------------------------------------------------------------------
 select count(id) count from song;
 -----
---  > R: 56362
+--  > R: 56411
 
 --------------------
 select count(id) count from album;
 -----
---  > R: 4418
+--  > R: 4421
 
 --
 -- \Music\iTunes\iTunes Media\Music
