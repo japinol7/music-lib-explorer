@@ -5,15 +5,12 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 	Objective: Make a very simple Music Library Metadata Explorer using flask and SQLAlchemy.
     Title: Music Library Metadata Explorer
 	program: music-lib-explorer
-	version: 1.0.1
+	version: 1.0.2
 	author: Joan A. Pinol
 	author_nickname: japinol
 	author_gitHub: japinol7
 	author_twitter: @japinol
-	Python requires: 3.10 or greater.
-	Python versions tested: 
-        > 3.10.10 64bits under Windows 11
-        > 3.11.5 64bits under Windows 11
+	Python requires: 3.11 or greater.
 
 
 ## Screenshots
