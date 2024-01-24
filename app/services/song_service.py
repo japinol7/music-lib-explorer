@@ -85,3 +85,9 @@ def get_music_songs(all_songs=False, name=None, artist=None, album=None, album_a
 
     songs = songs.all()
     return songs if songs else []
+
+
+def get_music_songs_to_export():
+    songs = get_music_songs(all_songs=True)
+    songs = songs.order_by(Album.artist, Album.name, Song.disc_number, Song.track_number)
+    return songs if songs else []

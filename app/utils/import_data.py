@@ -34,7 +34,7 @@ def __unzip_data_files():
     if session.query(Song).count() > 0:
         return
 
-    logger.info(f"Unzip database files")
+    logger.info("Unzip database files")
     try:
         with ZipFile(config.DATASET_FILE_ZIP) as fin_zip:
             fin_zip.extractall(config.RESOURCES_FOLDER)
@@ -67,7 +67,7 @@ def __import_music_songs():
     if not ALLOW_TO_IMPORT_SEVERAL_FILES and session.query(Song).count() > 0:
         return
 
-    logger.info(f"Start to Import music lib songs file")
+    logger.info("Start to Import music lib songs file")
     if config.DATASET_SOURCE_FORMAT == config.DATASET_SOURCE_CSV:
         dataset = __get_dataset_from_csv()
     elif config.DATASET_SOURCE_FORMAT == config.DATASET_SOURCE_XML:
@@ -193,7 +193,7 @@ def __import_music_songs():
 
     logger.info("Committing to database")
     session.commit()
-    logger.info(f"End Import music lib songs file")
+    logger.info("End Import music lib songs file")
 
 
 def __import_users():

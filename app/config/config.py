@@ -91,3 +91,61 @@ FILE_LOCATION_REPLACE = FileLocationReplace('', '')
 ALLOW_TO_IMPORT_SEVERAL_FILES = False
 IS_USER_ADDED = False
 # End Adjustments to a particular dataset
+
+# Songs export settings
+SONGS_EXPORT_FILE_NAME = 'songs_report.xlsx'
+SONGS_EXPORT_FIELD_NORMAL_WIDTH = 17
+songs_export_field_titles = namedtuple('songs_export_field_titles', ['name', 'width'])
+SONGS_EXPORT_FIELD_TITLES = [
+    songs_export_field_titles('id', 12),
+    songs_export_field_titles('album_artist', 47),
+    songs_export_field_titles('album', 67),
+    songs_export_field_titles('disc_number', 14),
+    songs_export_field_titles('track_number', 14),
+    songs_export_field_titles('song_name', 76),
+    songs_export_field_titles('duration_rep', 15),
+    songs_export_field_titles('year', 9),
+    songs_export_field_titles('genre', 26),
+    songs_export_field_titles('duration', 13),
+    songs_export_field_titles('artist', 59),
+    songs_export_field_titles('plays', 19),
+    songs_export_field_titles('composer', 69),
+    songs_export_field_titles('track_id', 14),
+    songs_export_field_titles('persistent_id', 28),
+    songs_export_field_titles('x_id', 38),
+    songs_export_field_titles('album_id', 18),
+    songs_export_field_titles('grouping', 22),
+    songs_export_field_titles('work', 50),
+    songs_export_field_titles('location', 110),
+    songs_export_field_titles('date_released', 16),
+    songs_export_field_titles('date_modified', 16),
+    songs_export_field_titles('date_added', 16),
+    songs_export_field_titles('date_added_orig', 18),
+    songs_export_field_titles('is_data_added_fixed', 18),
+    songs_export_field_titles('date_imported', 17),
+    songs_export_field_titles('mov_number', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    songs_export_field_titles('mov_count', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    songs_export_field_titles('mov_name', 42),
+    songs_export_field_titles('size', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    songs_export_field_titles('disc_count', 15),
+    songs_export_field_titles('track_count', 15),
+    songs_export_field_titles('bit_rate', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    songs_export_field_titles('sample_rate', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    songs_export_field_titles('comments', 80),
+    songs_export_field_titles('file_folder_count', 15),
+    songs_export_field_titles('sort_album', 67),
+    songs_export_field_titles('sort_artist', 59),
+    songs_export_field_titles('sort_composer', 50),
+    songs_export_field_titles('sort_name', 76),
+    songs_export_field_titles('artwork_count', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    songs_export_field_titles('normalization', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    songs_export_field_titles('is_user_added', SONGS_EXPORT_FIELD_NORMAL_WIDTH),
+    ]
+EXPORT_FILE_PROPERTIES = {
+    'title': 'Song list report from MusicLME',
+    'subject': 'Song list report from MusicLME',
+    'author': 'Music Library Metadata Explorer - MusicLME',
+    'keywords': 'song, MusicLME',
+    'comments': 'Created with Music Library Metadata Explorer',
+    }
+EXPORT_FILE_MIMETYPE = 'application/xlsx'
