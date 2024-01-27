@@ -23,8 +23,8 @@ setup_db.setup_db()
 total_songs = song_service.get_total_music_songs()
 
 
-@app.route('/settings', methods=['GET', 'POST'])
-def export_movies_report():
+@app.route('/settings', methods=['GET'])
+def settings_view():
     return render_template('settings.html')
 
 
@@ -76,8 +76,7 @@ def _get_songs_export_field_values(song, text_left__format, date_format):
     ]
 
 
-@app.route('/export_songs_report', methods=['GET', 'POST'])
-def export_songs_report():
+def _export_songs_report():
     logger.info("Start exporting songs report")
     songs = song_service.get_music_songs_to_export()
     buffer = io.BytesIO()
@@ -114,3 +113,19 @@ def export_songs_report():
     return send_file(buffer, as_attachment=True,
                      download_name=SONGS_EXPORT_FILE_NAME,
                      mimetype=EXPORT_FILE_MIMETYPE)
+
+
+@app.route('/export_songs_report', methods=['GET'])
+def export_songs_report():
+    res, error_msg = None, None
+    is_error = False
+    try:
+        res = _export_songs_report()
+    except Exception as e:
+        is_error = True
+        error_msg = "Error exporting songs data"
+        logger.error("%s. Error msg: %s", error_msg, e)
+
+    return res or render_template('settings.html',
+                                  is_error=is_error,
+                                  error_msg=error_msg)

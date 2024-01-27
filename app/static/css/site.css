@@ -81,6 +81,11 @@ h1 {
     display: inline-block;
 }
 
+.music-list-api-call-success {
+    background: #98e6a0;
+    color: #15411a;
+}
+
 .music-list-api-call-error {
     background: #fffbe3;
     color: red;

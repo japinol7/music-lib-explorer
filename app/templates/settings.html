@@ -4,9 +4,21 @@
     <h1>Music Library - Settings</h1>
 
     <div class="mui-panel">
+        <br>
+        <h3>Export songs data</h3> <br>
         <p>
-            <button class="mui-btn mui-btn--raised"><a href="/export_songs_report">Export songs</a></button>
+            <button class="mui-btn mui-btn--raised"><a href="/export_songs_report"
+            >Export songs to Excel</a></button>
         <p>
+        <br>
+
+        {% if is_error %}
+            <div class="music-list-api-call-error">
+                <p> <br>
+                    <strong>{{ error_msg }}</strong>
+                <p> <br>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}
