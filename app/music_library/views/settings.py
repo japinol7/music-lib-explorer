@@ -109,6 +109,7 @@ def _export_songs_report():
 
     workbook.close()
     buffer.seek(0)
+    logger.info("Exporting songs report: Report ready to send.")
 
     return send_file(buffer, as_attachment=True,
                      download_name=SONGS_EXPORT_FILE_NAME,
