@@ -18,7 +18,11 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 <img src="screenshots/screenshot1.png"> <br/> <br/>
 <img src="screenshots/screenshot2.png"> <br/> <br/>
 <img src="screenshots/screenshot3.png"> <br/> <br/>
-<img src="screenshots/screenshot4.png"> <br/>
+<img src="screenshots/screenshot4.png"> <br/> <br/>
+
+#### Starting with version 1.0.2 you can export the Music data to Excel
+<img src="screenshots/screenshot5.png"> <br/>
+<br> <br>
 
 
 **To make this web server app to work in your local environment**
