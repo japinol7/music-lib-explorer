@@ -3,16 +3,14 @@ from datetime import datetime
 from itertools import groupby
 
 from app.config import config
-from app.logger import get_logger
-
-logger = get_logger()
+from app.tools.logger.logger import log
 
 
 class Dataset(metaclass=ABCMeta):
     """Represents a dataset structured as a list of dictionaries."""
 
     def __init__(self, dataset):
-        self.logger = logger
+        self.logger = log
         self.dataset = self._process(dataset)
         self.dataset_source = ''
 

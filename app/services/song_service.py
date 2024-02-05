@@ -5,6 +5,35 @@ from app.data import session_factory
 from app.data.models.song import Song
 from app.data.models.album import Album
 
+ALBUM_NAME_VARIANTS_TEXT_TO_REMOVE = [
+    "(remastered)",
+    "[remastered]",
+    "remastered",
+    "remaster",
+    "(bonus version)",
+    "[bonus version]",
+    "bonus version",
+    "(exclusive bonus track version)",
+    "[exclusive bonus track version]",
+    "exclusive bonus track version",
+    "(bonus track version)",
+    "[bonus track version]",
+    "bonus track version",
+    "35th anniversary edition (remastered)",
+    "25th anniversary edition",
+    "anniversary edition (remastered)",
+    "anniversary edition",
+    ]
+
+
+ALBUM_NAME_VARIANT_EXTERNAL_MAPPING = {
+    'anzenchitai': 'anzen chitai',
+    }
+
+ARTIST_NAME_EXTERNAL_MAPPING = {
+    'anzenchitai': 'anzen chitai',
+    }
+
 
 def get_total_music_songs():
     session = session_factory.create_session()

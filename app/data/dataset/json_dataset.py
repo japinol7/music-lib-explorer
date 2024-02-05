@@ -1,8 +1,8 @@
 from decimal import Decimal
 from collections import OrderedDict
 
-from ...config import config
-from .dataset import Dataset
+from app.config import config
+from app.data.dataset.dataset import Dataset
 
 
 class JsonDataset(Dataset):

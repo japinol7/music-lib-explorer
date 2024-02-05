@@ -3,8 +3,12 @@ import pathlib
 
 from collections import namedtuple, OrderedDict
 
-LOGGER_FORMAT = '%(levelname)s: %(message)s'
 STR_ENCODING = 'utf-8'
+
+SETTINGS_ID = 1
+DEFAULT_IS_GET_SPOTIFY_DATA = False
+
+config_settings = {'settings': None}
 
 DATASET_SOURCE_FORMAT = 'csv'
 
@@ -149,3 +153,16 @@ EXPORT_FILE_PROPERTIES = {
     'comments': 'Created with Music Library Metadata Explorer',
     }
 EXPORT_FILE_MIMETYPE = 'application/xlsx'
+
+
+def update_config_settings(session, settings_model):
+    settings = session.get(settings_model, SETTINGS_ID)
+    if not settings:
+        settings = settings_model()
+        settings.id = SETTINGS_ID
+        settings.is_get_spotify_data = DEFAULT_IS_GET_SPOTIFY_DATA
+        session.add(settings)
+        session.commit()
+
+    config_settings['settings'] = settings
+    return settings

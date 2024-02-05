@@ -1,9 +1,7 @@
 import io
 from datetime import datetime
-import logging
 
-from flask import render_template, send_file
-import xlsxwriter
+from flask import render_template, send_file, request
 
 from app import app
 from app.config.config import (
@@ -11,13 +9,15 @@ from app.config.config import (
     SONGS_EXPORT_FIELD_TITLES,
     SONGS_EXPORT_FILE_NAME,
     EXPORT_FILE_MIMETYPE,
+    SETTINGS_ID,
+    config_settings,
+    update_config_settings,
     )
+from app.data import session_factory
+from app.data.models.settings import Settings
 from app.services import song_service
-from app.utils import setup_db
-
-logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s: %(message)s')
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+from app.tools.logger.logger import log
+from app.tools.utils import setup_db
 
 setup_db.setup_db()
 total_songs = song_service.get_total_music_songs()
@@ -25,7 +25,22 @@ total_songs = song_service.get_total_music_songs()
 
 @app.route('/settings', methods=['GET'])
 def settings_view():
-    return render_template('settings.html')
+    return render_template('settings.html',
+                           data=config_settings['settings'])
+
+
+@app.route('/settings_save_changes', methods=['POST'])
+def settings_save_changes():
+    is_get_spotify_data = 'is_get_spotify_data_flag' in request.form.getlist('flags')
+    session = session_factory.create_session()
+    settings = session.get(Settings, SETTINGS_ID)
+    if settings:
+        settings.is_get_spotify_data = is_get_spotify_data
+        session.commit()
+        update_config_settings(session, Settings)
+
+    return render_template('settings.html',
+                           data=config_settings['settings'])
 
 
 def _get_songs_export_field_values(song, text_left__format, date_format):
@@ -77,7 +92,7 @@ def _get_songs_export_field_values(song, text_left__format, date_format):
 
 
 def _export_songs_report():
-    logger.info("Start exporting songs report")
+    log.info("Start exporting songs report")
     songs = song_service.get_music_songs_to_export()
     buffer = io.BytesIO()
     workbook = xlsxwriter.Workbook(buffer)
@@ -109,7 +124,7 @@ def _export_songs_report():
 
     workbook.close()
     buffer.seek(0)
-    logger.info("Exporting songs report: Report ready to send.")
+    log.info("Exporting songs report: Report ready to send.")
 
     return send_file(buffer, as_attachment=True,
                      download_name=SONGS_EXPORT_FILE_NAME,
@@ -125,7 +140,7 @@ def export_songs_report():
     except Exception as e:
         is_error = True
         error_msg = "Error exporting songs data"
-        logger.error("%s. Error msg: %s", error_msg, e)
+        log.error("%s. Error msg: %s", error_msg, e)
 
     return res or render_template('settings.html',
                                   is_error=is_error,

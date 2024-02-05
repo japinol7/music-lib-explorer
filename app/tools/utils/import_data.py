@@ -1,5 +1,4 @@
 from collections import Counter
-import logging
 from zipfile import ZipFile
 
 from app.data import session_factory
@@ -12,11 +11,8 @@ from app.data.dataset.xml_dataset import XmlDataset
 from app.config import config
 from app.config.config import DATASET_SOURCE_FORMAT as FORMAT
 from app.config.config import ALLOW_TO_IMPORT_SEVERAL_FILES
-from app.utils.utils import time_seconds_format_to_hms, time_seconds_format_to_min_sec
-
-logging.basicConfig(format=config.LOGGER_FORMAT)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+from app.tools.logger.logger import log
+from app.tools.utils.utils import time_seconds_format_to_hms, time_seconds_format_to_min_sec
 
 
 class ImportDataException(Exception):
@@ -34,7 +30,7 @@ def __unzip_data_files():
     if session.query(Song).count() > 0:
         return
 
-    logger.info("Unzip database files")
+    log.info("Unzip database files")
     try:
         with ZipFile(config.DATASET_FILE_ZIP) as fin_zip:
             fin_zip.extractall(config.RESOURCES_FOLDER)
@@ -67,7 +63,7 @@ def __import_music_songs():
     if not ALLOW_TO_IMPORT_SEVERAL_FILES and session.query(Song).count() > 0:
         return
 
-    logger.info("Start to Import music lib songs file")
+    log.info("Start to Import music lib songs file")
     if config.DATASET_SOURCE_FORMAT == config.DATASET_SOURCE_CSV:
         dataset = __get_dataset_from_csv()
     elif config.DATASET_SOURCE_FORMAT == config.DATASET_SOURCE_XML:
@@ -188,12 +184,12 @@ def __import_music_songs():
             album.artist,
             album.name,
             ])
-        logger.info(f"Adding album num {count_albums:6} to database: {key}")
+        log.info(f"Adding album num {count_albums:6} to database: {key}")
         session.add(album)
 
-    logger.info("Committing to database")
+    log.info("Committing to database")
     session.commit()
-    logger.info("End Import music lib songs file")
+    log.info("End Import music lib songs file")
 
 
 def __import_users():

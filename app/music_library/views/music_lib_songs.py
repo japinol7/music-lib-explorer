@@ -1,18 +1,17 @@
-import logging
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 import webbrowser
 
-from flask import render_template, request
+from flask import render_template, request, redirect
 from app import app
+from app.data import session_factory
 
+from app.config.config import config_settings
+from app.tools.logger.logger import log
+from app.data.models.song import Song
 from app.services import data_service, song_service
-from app.utils import setup_db
-from app.utils import import_data
-
-logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s: %(message)s')
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+from app.tools.utils import setup_db, import_data
+from app.addons.spotify.controller.spotify_controller import get_spotify_data
 
 setup_db.setup_db()
 total_songs = song_service.get_total_music_songs()
@@ -52,7 +51,10 @@ def music_lib_songs():
         if file_path_obj.is_file():
             webbrowser.open(file_path)
         form_executed = 'music_song_play_form'
-    return render_template('music_lib_songs.html', songs=songs, form_executed=form_executed)
+    return render_template('music_lib_songs.html',
+                           songs=songs,
+                           settings=config_settings['settings'],
+                           form_executed=form_executed)
 
 
 def get_music_songs(name, artist, album, album_artist, composer, genre, limit,
@@ -73,3 +75,28 @@ def get_music_songs(name, artist, album, album_artist, composer, genre, limit,
              artist, album, total_songs or song_service.get_total_music_songs(),
              composer, genre, album_artist, song_user_added),
             len(songs), music_gen_data, songs, {'error': error})
+
+
+@app.route('/spotify-lib-song', methods=['POST'])
+def spotify_lib_song():
+    if request.method == 'POST' and 'spotify_album_from_song' in request.form:
+        song_id = request.form.get('spotify_album_from_song')
+
+        if not song_id or not song_id.isnumeric():
+            log.warning(f"Invalid song id: {song_id}")
+            return redirect('/music-lib-songs')
+
+        session = session_factory.create_session()
+        song = session.get(Song, song_id)
+
+        if not song or not song.id:
+            log.warning(f"Invalid song id: {song_id}")
+            return redirect('/music-lib-songs')
+
+        get_spotify_data(song)
+
+        if not song.spotify_album_url:
+            log.warning("No Spotify album found for album: %s and artist: %s", song.album.name, song.album.artist)
+            return redirect('/music-lib-songs')
+
+        return redirect(song.spotify_album_url)

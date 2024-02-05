@@ -170,6 +170,25 @@
                         <td>{{ item.disc_count_total }}</td>
                         <td>{{ item.tracks_on_discs }}</td>
                     </tr>
+                    {% if settings.is_get_spotify_data %}
+                        <tr>
+                            <td></td>     <td></td>
+                            <td class="body_small"><a href="{{ item.spotify_album_url }}">{{ item.spotify_album_url }}</a></td>
+                            <td style="background-color: #bac9ef">
+                                Spotify:
+                            </td>
+                            <td>
+                                <form action="/spotify-lib-album" id="spotify_album_from_album_form" method="POST">
+                                    <input id="spotify_album_from_album" name="spotify_album_from_album" type="hidden"
+                                           value={{ item.id }}>
+                                    <button type="submit" style="background-color: #bac9ef">Album</button>
+                                </form>
+                            </td>
+                            <td></td>     <td></td>     <td></td>     <td></td>
+                            <td></td>     <td></td>     <td></td>     <td></td>
+                            <td></td>     <td></td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
 		    {% else %}

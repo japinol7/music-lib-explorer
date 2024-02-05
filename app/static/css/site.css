@@ -81,6 +81,10 @@ h1 {
     display: inline-block;
 }
 
+.settings-save-form-class {
+    display: inline-block;
+}
+
 .music-list-api-call-success {
     background: #98e6a0;
     color: #15411a;

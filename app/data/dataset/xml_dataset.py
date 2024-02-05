@@ -3,9 +3,9 @@ from decimal import Decimal
 from collections import OrderedDict
 import xml.etree.ElementTree as etree
 
-from ...config import config
-from ...config.config import COLUMN_TO_ADD_TO_GROUP
-from .dataset import Dataset
+from app.config import config
+from app.config.config import COLUMN_TO_ADD_TO_GROUP
+from app.data.dataset.dataset import Dataset
 
 
 class XmlDataset(Dataset):

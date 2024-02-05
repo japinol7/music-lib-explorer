@@ -1,14 +1,15 @@
-import logging
-from flask import render_template, request
+from flask import render_template, request, redirect
 from app import app
+from app.data import session_factory
 
+from app.config.config import config_settings
+from app.tools.logger.logger import log
+from app.data.models.album import Album
 from app.services import album_service, data_service
-from app.utils import setup_db
-from app.utils import import_data
+from app.tools.utils import setup_db
+from app.tools.utils import import_data
+from app.addons.spotify.controller.spotify_controller import get_spotify_data
 
-logging.basicConfig(format='%(asctime)s %(levelname)s %(name)s: %(message)s')
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 setup_db.setup_db()
 total_albums = album_service.get_total_music_albums()
@@ -42,7 +43,10 @@ def music_lib_albums():
         albums = (('', ''), len(albums_res), {}, albums_res, {'error': error})
         form_executed = 'music_lib_import_data_form'
 
-    return render_template('music_lib_albums.html', albums=albums, form_executed=form_executed)
+    return render_template('music_lib_albums.html',
+                           albums=albums,
+                           settings=config_settings['settings'],
+                           form_executed=form_executed)
 
 
 def get_music_albums(name, artist, album, album_artist, composer, genre, limit,
@@ -63,3 +67,29 @@ def get_music_albums(name, artist, album, album_artist, composer, genre, limit,
              artist, album, total_albums or album_service.get_total_music_albums(),
              composer, genre, album_artist),
             len(albums), music_gen_data, albums, {'error': error})
+
+
+@app.route('/spotify-lib-album', methods=['POST'])
+def spotify_lib_album():
+    if request.method == 'POST' and 'spotify_album_from_album' in request.form:
+        album_id = request.form.get('spotify_album_from_album')
+
+        if not album_id or not album_id.isnumeric():
+            log.warning(f"Invalid album id: {album_id}")
+            return redirect('/music-lib-albums')
+
+        session = session_factory.create_session()
+        album = session.get(Album, album_id)
+
+        if not album or not album.id or len(album.songs) < 1:
+            log.warning(f"Invalid album id: {album_id}")
+            return redirect('/music-lib-albums')
+
+        get_spotify_data(album.songs[0])
+
+        fist_song = album.songs[0]
+        if not fist_song.spotify_album_url:
+            log.warning("No Spotify album found for album: %s and artist: %s", album.name, album.artist)
+            return redirect('/music-lib-albums')
+
+        return redirect(fist_song.spotify_album_url)
