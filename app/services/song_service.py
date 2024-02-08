@@ -19,10 +19,21 @@ ALBUM_NAME_VARIANTS_TEXT_TO_REMOVE = [
     "(bonus track version)",
     "[bonus track version]",
     "bonus track version",
+    "deluxe version",
     "35th anniversary edition (remastered)",
     "25th anniversary edition",
     "anniversary edition (remastered)",
     "anniversary edition",
+    "[original motion picture soundtrack]",
+    "(original motion picture soundtrack)",
+    "original motion picture soundtrack",
+    "soundtrack from the motion picture",
+    "original motion picture",
+    "(original soundtrack)"
+    "original soundtrack",
+    "soundtrack",
+    "(platinum edition)",
+    "platinum edition",
     ]
 
 

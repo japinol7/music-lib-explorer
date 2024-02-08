@@ -165,4 +165,5 @@ def update_config_settings(session, settings_model):
         session.commit()
 
     config_settings['settings'] = settings
+    config_settings['spotify_controller'] = None
     return settings

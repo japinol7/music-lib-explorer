@@ -1,9 +1,11 @@
+from functools import lru_cache
 import os
 from pathlib import Path
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 
+from app.config.config import config_settings
 from app.tools.logger.logger import log
 from app.tools.utils import utils
 from app.services.song_service import (
@@ -18,11 +20,13 @@ MIN_ARTIST_FOLLOWERS = 2
 MIN_ARTIST_POPULARITY = 1
 ARTISTS_LIMIT_MARGIN_DISCARDED = 25
 
+SPOTIFY_API_LRU_CACHE_SIZE = 32
 SPOTIFY_API_KEY_FOLDER = os.path.join(str(Path.home()), '.api_keys', 'spotify_api_keys')
 SPOTIFY_API_KEY_FILE = os.path.join(SPOTIFY_API_KEY_FOLDER, 'spotify_client_id.key')
 SPOTIFY_API_PRIVATE_KEY_FILE = os.path.join(SPOTIFY_API_KEY_FOLDER, 'spotify_client_secret.key')
 os.environ['SPOTIPY_CLIENT_ID'] = utils.read_file_as_string(SPOTIFY_API_KEY_FILE)
 os.environ['SPOTIPY_CLIENT_SECRET'] = utils.read_file_as_string(SPOTIFY_API_PRIVATE_KEY_FILE)
+SPOTIFY_LOG_PREFIX = 'Spotify. '
 
 
 class SpotifyController:
@@ -120,7 +124,7 @@ class SpotifyController:
             artist_data = artist_items[0]
             artist = SpotifyArtist(artist_data['id'])
             self._fill_artist_fields(artist, artist_data)
-            log.info(f"Artist: {artist.name}, followers: {artist.followers} "
+            log.info(f"{SPOTIFY_LOG_PREFIX}Artist: {artist.name}, followers: {artist.followers} "
                      f"popularity: {artist.popularity} uri/url {artist.uri} {artist.url}")
 
         if self.album_name:
@@ -149,7 +153,7 @@ class SpotifyController:
             albums_data.extend(albums_results['items'])
 
         for album_data in albums_data[:self.limit]:
-            log.info(f"Album: {album_data['name']}")
+            log.info(f"{SPOTIFY_LOG_PREFIX}Album: {album_data['name']}")
             album = SpotifyAlbum(id=album_data['id'])
             artist_data = album_data['artists'][0]
             artist = SpotifyArtist(artist_data['id'])
@@ -167,7 +171,7 @@ class SpotifyController:
             albums_data.extend(albums_results['items'])
 
         for album_data in albums_data[:self.limit]:
-            log.info(f"Album: {album_data['name']}")
+            log.info(f"{SPOTIFY_LOG_PREFIX}Album: {album_data['name']}")
             album = SpotifyAlbum(id=album_data['id'])
             self._fill_album_fields(album, album_data, artist)
             albums.append(album)
@@ -189,7 +193,7 @@ class SpotifyController:
                 break
             other_artist = SpotifyArtist(other_artist_data['id'])
             self._fill_artist_fields(other_artist, other_artist_data)
-            log.info(f"--- Another artist: {other_artist.name}, followers: {other_artist.followers} "
+            log.info(f"--- {SPOTIFY_LOG_PREFIX}Another artist: {other_artist.name}, followers: {other_artist.followers} "
                      f"popularity: {other_artist.popularity} uri/url {other_artist.uri} {other_artist.url}")
 
     def _fill_album_fields(self, album, item, artist):
@@ -212,40 +216,54 @@ class SpotifyController:
         artist.image_url = item['images'] and item['images'][0]['url'] or None
         artist.popularity = item['popularity']
 
+    @staticmethod
+    def get_controller():
+        return SpotifyController(
+            artist_name=None, limit=1, start_date=None, end_date=None, artist_match_method=None,
+            artist_uri_id=None, order_by=None, only_artists=False, album_name=None)
 
 
+def _get_album_url_from_spotify_music_data(music_data):
+    return music_data[3][0].url if music_data[3] else ''
 
-def _spotify_search_variant(music_controller, song, song_album_name_lower, text_to_remove_variant):
+
+def _spotify_search_variant(music_controller, song, album_artist, album_name, text_to_remove_variant):
     if song.spotify_album_url:
         return
 
-    if text_to_remove_variant not in song_album_name_lower:
+    if text_to_remove_variant not in album_name:
         return
 
-    song_album_name = song_album_name_lower.replace(text_to_remove_variant, '').strip()
-    log.info(f"Search album name variant: {song_album_name} and artist: {song.album.artist}")
-    music_controller.soft_reset()
-    music_controller.album_name = song_album_name
-    music_controller.artist_name = song.album.artist
-    sp_music_data = music_controller.get_spotify_music()
-    song.spotify_album_url = sp_music_data[3][0].url if sp_music_data[3] else ''
+    album_name = album_name.replace(text_to_remove_variant, '').strip()
+    log.info(f"{SPOTIFY_LOG_PREFIX}Search album name variant: {album_name} | artist_name: {album_artist}")
+    sp_music_data = _get_spotify_data(music_controller, album_artist, album_name)
+    song.spotify_album_url = _get_album_url_from_spotify_music_data(sp_music_data)
+
+
+@lru_cache(maxsize=SPOTIFY_API_LRU_CACHE_SIZE)
+def _get_spotify_data(controller, album_artist, album_name):
+    controller.soft_reset()
+    controller.album_name = album_name
+    controller.artist_name = album_artist
+    return controller.get_spotify_music()
 
 
 def get_spotify_data(song):
     album_artist = song.album.artist.lower()
     album_artist = ARTIST_NAME_EXTERNAL_MAPPING.get(album_artist, album_artist)
 
-    song_album_name_lower = song.album.name.lower()
+    song_album_name = song.album.name.lower()
     for orig_subtext, new_subtext in ALBUM_NAME_VARIANT_EXTERNAL_MAPPING.items():
-        song_album_name_lower = song_album_name_lower.replace(orig_subtext, new_subtext)
+        song_album_name = song_album_name.replace(orig_subtext, new_subtext)
 
-    music_controller = SpotifyController(
-        artist_name=album_artist, limit=1, start_date=None, end_date=None, artist_match_method=None,
-        artist_uri_id=None, order_by=None, only_artists=False, album_name=song_album_name_lower)
+    log.info(f"{SPOTIFY_LOG_PREFIX}Search album with name ..: {song_album_name} | artist_name: {album_artist}")
 
-    log.info(f"Search album name .......: {song_album_name_lower} and artist: {album_artist}")
-    sp_music_data = music_controller.get_spotify_music()
-    song.spotify_album_url = sp_music_data[3][0].url if sp_music_data[3] else ''
+    if not config_settings['spotify_controller']:
+        config_settings['spotify_controller'] = SpotifyController.get_controller()
+    music_controller = config_settings['spotify_controller']
+
+    sp_music_data = _get_spotify_data(music_controller, album_artist, song_album_name)
+    song.spotify_album_url = _get_album_url_from_spotify_music_data(sp_music_data)
 
     for text_to_remove_variant in ALBUM_NAME_VARIANTS_TEXT_TO_REMOVE:
-        _spotify_search_variant(music_controller, song, song_album_name_lower, text_to_remove_variant)
+        _spotify_search_variant(music_controller, song, album_artist, song_album_name, text_to_remove_variant)
