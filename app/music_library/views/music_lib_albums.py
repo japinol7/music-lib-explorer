@@ -8,8 +8,7 @@ from app.data.models.album import Album
 from app.services import album_service, data_service
 from app.tools.utils import setup_db
 from app.tools.utils import import_data
-from app.addons.spotify.controller.spotify_controller import get_spotify_data
-
+from app.addons.spotify.controller.spotify_controller import get_spotify_data_album, get_spotify_data_artist
 
 setup_db.setup_db()
 total_albums = album_service.get_total_music_albums()
@@ -85,11 +84,37 @@ def spotify_lib_album():
             log.warning(f"Invalid album id: {album_id}")
             return redirect('/music-lib-albums')
 
-        get_spotify_data(album.songs[0])
+        first_song = album.songs[0]
+        get_spotify_data_album(first_song)
 
-        fist_song = album.songs[0]
-        if not fist_song.spotify_album_url:
+        if not first_song.spotify_album_url:
             log.warning("No Spotify album found for album: %s and artist: %s", album.name, album.artist)
             return redirect('/music-lib-albums')
 
-        return redirect(fist_song.spotify_album_url)
+        return redirect(first_song.spotify_album_url)
+
+
+@app.route('/spotify-lib-album-artist', methods=['POST'])
+def spotify_lib_album_artist():
+    if request.method == 'POST' and 'spotify_album_from_album' in request.form:
+        album_id = request.form.get('spotify_album_from_album')
+
+        if not album_id or not album_id.isnumeric():
+            log.warning(f"Invalid album id: {album_id}")
+            return redirect('/music-lib-albums')
+
+        session = session_factory.create_session()
+        album = session.get(Album, album_id)
+
+        if not album or not album.id or len(album.songs) < 1:
+            log.warning(f"Invalid album id: {album_id}")
+            return redirect('/music-lib-albums')
+
+        first_song = album.songs[0]
+        get_spotify_data_artist(first_song)
+
+        if not first_song.spotify_artist_url:
+            log.warning("No Spotify album found for artist: %s", album.artist)
+            return redirect('/music-lib-albums')
+
+        return redirect(first_song.spotify_artist_url)

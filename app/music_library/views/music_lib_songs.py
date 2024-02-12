@@ -11,7 +11,7 @@ from app.tools.logger.logger import log
 from app.data.models.song import Song
 from app.services import data_service, song_service
 from app.tools.utils import setup_db, import_data
-from app.addons.spotify.controller.spotify_controller import get_spotify_data
+from app.addons.spotify.controller.spotify_controller import get_spotify_data_album, get_spotify_data_artist
 
 setup_db.setup_db()
 total_songs = song_service.get_total_music_songs()
@@ -93,10 +93,35 @@ def spotify_lib_song():
             log.warning(f"Invalid song id: {song_id}")
             return redirect('/music-lib-songs')
 
-        get_spotify_data(song)
+        get_spotify_data_album(song)
 
         if not song.spotify_album_url:
             log.warning("No Spotify album found for album: %s and artist: %s", song.album.name, song.album.artist)
             return redirect('/music-lib-songs')
 
         return redirect(song.spotify_album_url)
+
+
+@app.route('/spotify-lib-song-artist', methods=['POST'])
+def spotify_lib_song_artist():
+    if request.method == 'POST' and 'spotify_album_from_song' in request.form:
+        song_id = request.form.get('spotify_album_from_song')
+
+        if not song_id or not song_id.isnumeric():
+            log.warning(f"Invalid song id: {song_id}")
+            return redirect('/music-lib-songs')
+
+        session = session_factory.create_session()
+        song = session.get(Song, song_id)
+
+        if not song or not song.id:
+            log.warning(f"Invalid song id: {song_id}")
+            return redirect('/music-lib-songs')
+
+        get_spotify_data_artist(song)
+
+        if not song.spotify_artist_url:
+            log.warning("No Spotify album found for artist: %s", song.album.artist)
+            return redirect('/music-lib-songs')
+
+        return redirect(song.spotify_artist_url)
