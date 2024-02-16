@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Music Library - Spotify data Info</h1>
+
+    <div class="body" style="margin-left: 15px">
+        {% if not settings.is_get_spotify_data %}
+            <br> <h4 style="color: darkred">Spotify feature is not activated</h4> <br>
+            <hr style="border-width:2px;border-color:#8097b3">
+        {% elif not spotify_client_init %}
+            <br> <h4 style="color: darkred">ERROR: Spotify client is not initialized</h4> <br>
+            <hr style="border-width:2px;border-color:#8097b3">
+        {% else %}
+            {% if artist %}
+                <div>artist</div>
+                <h3>{{ artist.name }}</h3>
+                {%  if artist.url %}
+                    <p>url:
+                        <a class="body_small" href="{{ artist.url }}">{{ artist.url }}</a>
+                    </p>
+                    {%  if artist.image_url %}
+                        <p>
+                            <a href="{{ artist.image_url }}" target="_self">
+                               <img src="{{ artist.image_url }}" style="height: 300px;"
+                                 alt="{{ artist.image_url }} picture">
+                            </a>
+                        </p>
+                    {% else %}
+                        <p style="color: darkred">Artist photo not found on Spotify</p>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <h4 style="color: darkred">Artist not found on Spotify</h4>
+            {% endif %}
+            <br>
+            <hr style="border-width:2px;border-color:#8097b3">
+
+            <br>
+            {% if album %}
+                <div>album</div>
+                <h4>{{ album.name }}</h4>
+                <p>Release date: {{ album.release_date }}</p>
+                {%  if album.url %}
+                    <p>url:
+                        <a class="body_small" href="{{ album.url }}">{{ album.url }}</a>
+                    </p>
+                    {%  if album.image_url %}
+                        <p>
+                            <a href="{{ album.image_url }}" target="_self">
+                               <img src="{{ album.image_url }}" style="height: 360px;"
+                                 alt="{{ album.image_url }} picture">
+                            </a>
+                        </p>
+                    {% else %}
+                        <p style="color: darkred">Album photo not found on Spotify</p>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <h4 style="color: darkred">Album not found on Spotify</h4>
+            {% endif %}
+            <br>
+            <hr style="border-width:2px;border-color:#8097b3">
+        </div>
+        {% endif %}
+{% endblock %}

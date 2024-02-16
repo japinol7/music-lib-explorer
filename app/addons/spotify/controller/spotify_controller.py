@@ -239,6 +239,7 @@ def _spotify_search_variant(music_controller, song, album_artist, album_name, te
     log.info(f"{SPOTIFY_LOG_PREFIX}Search album name variant: {album_name} | artist_name: {album_artist}")
     sp_music_data = _get_spotify_data(music_controller, album_artist, album_name)
     song.spotify_album_url = _get_album_url_from_spotify_music_data(sp_music_data)
+    return sp_music_data
 
 
 @lru_cache(maxsize=SPOTIFY_API_LRU_CACHE_SIZE)
@@ -252,6 +253,10 @@ def _get_spotify_data(controller, album_artist, album_name):
 def _get_spotify_controller_from_settings():
     if not config_settings['spotify_controller']:
         config_settings['spotify_controller'] = SpotifyController.get_controller()
+
+    if not config_settings['spotify_controller'].spotify:
+        log.warning(f"{SPOTIFY_LOG_PREFIX}Spotify client is not initialized.")
+
     return config_settings['spotify_controller']
 
 
@@ -261,6 +266,8 @@ def _get_album_artist_name_corrected(song):
 
 
 def get_spotify_data_album(song):
+    log.info("Start get_spotify_data_album with song: %s", song)
+    song.spotify_album_url = None
     album_artist = _get_album_artist_name_corrected(song)
 
     song_album_name = song.album.name.lower()
@@ -270,21 +277,36 @@ def get_spotify_data_album(song):
     log.info(f"{SPOTIFY_LOG_PREFIX}Search album with name ..: {song_album_name} | artist_name: {album_artist}")
 
     music_controller = _get_spotify_controller_from_settings()
+    if not music_controller.spotify:
+        return
 
     sp_music_data = _get_spotify_data(music_controller, album_artist, song_album_name)
     song.spotify_album_url = _get_album_url_from_spotify_music_data(sp_music_data)
 
-    for text_to_remove_variant in ALBUM_NAME_VARIANTS_TEXT_TO_REMOVE:
-        _spotify_search_variant(music_controller, song, album_artist, song_album_name, text_to_remove_variant)
+    if not song.spotify_album_url:
+        for text_to_remove_variant in ALBUM_NAME_VARIANTS_TEXT_TO_REMOVE:
+            sp_music_data = _spotify_search_variant(music_controller, song, album_artist, song_album_name, text_to_remove_variant)
+            if song.spotify_album_url:
+                break
+
+    log.info("End get_spotify_data_album. Spotify music data: %s", sp_music_data)
+    return sp_music_data
 
 
 def get_spotify_data_artist(song):
+    log.info("Start get_spotify_data_artist with song: %s", song)
+    song.spotify_artist_url = None
     album_artist = _get_album_artist_name_corrected(song)
     song_album_name = None
 
     log.info(f"{SPOTIFY_LOG_PREFIX}Search artist with name ..: {album_artist}")
 
     music_controller = _get_spotify_controller_from_settings()
+    if not music_controller.spotify:
+        return
 
     sp_music_data = _get_spotify_data(music_controller, album_artist, song_album_name)
     song.spotify_artist_url = _get_artist_url_from_spotify_music_data(sp_music_data)
+
+    log.info("End get_spotify_data_artist. Spotify music data: %s", sp_music_data)
+    return sp_music_data
