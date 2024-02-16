@@ -191,7 +191,14 @@
                                     <button type="submit" style="background-color: #bac9ef">Artist</button>
                                 </form>
                             </td>
-                            <td></td>     <td></td>     <td></td>
+                            <td>
+                                <form action="/spotify-lib-album-info" id="spotify_info_from_album_form" method="POST">
+                                    <input id="spotify_info_from_album" name="spotify_info_from_album" type="hidden"
+                                           value={{ item.id }}>
+                                    <button type="submit" style="background-color: #bac9ef">Info</button>
+                                </form>
+                            </td>
+                            <td></td>     <td></td>
                             <td></td>     <td></td>     <td></td>     <td></td>
                             <td></td>     <td></td>
                         </tr>
