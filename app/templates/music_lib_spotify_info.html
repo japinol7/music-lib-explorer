@@ -15,9 +15,8 @@
                 <div>artist</div>
                 <h3>{{ artist.name }}</h3>
                 {%  if artist.url %}
-                    <p>url:
-                        <a class="body_small" href="{{ artist.url }}">{{ artist.url }}</a>
-                    </p>
+                    <br>
+                    <button class="mui-btn mui-btn--raised"><a href="{{ artist.url }}">Artist on Spotify</a></button>
                     {%  if artist.image_url %}
                         <p>
                             <a href="{{ artist.image_url }}" target="_self">
@@ -41,9 +40,8 @@
                 <h4>{{ album.name }}</h4>
                 <p>Release date: {{ album.release_date }}</p>
                 {%  if album.url %}
-                    <p>url:
-                        <a class="body_small" href="{{ album.url }}">{{ album.url }}</a>
-                    </p>
+                    <br>
+                    <button class="mui-btn mui-btn--raised"><a href="{{ album.url }}">Album on Spotify</a></button>
                     {%  if album.image_url %}
                         <p>
                             <a href="{{ album.image_url }}" target="_self">
@@ -58,7 +56,6 @@
             {% else %}
                 <h4 style="color: darkred">Album not found on Spotify</h4>
             {% endif %}
-            <br>
             <hr style="border-width:2px;border-color:#8097b3">
         </div>
         {% endif %}

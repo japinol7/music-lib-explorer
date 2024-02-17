@@ -143,6 +143,9 @@
                 <th>Year min</th>
                 <th>Year max</th>
                 <th>Tracks</th>
+                {% if settings.is_get_spotify_data %}
+                    <th>Spotify integration</th>
+                {% endif %}
                 <th>Duration (s)</th>
                 <th>Artist</th>
                 <th>Composer</th>
@@ -163,6 +166,15 @@
                         <td>{{ item.year }}</td>
                         <td>{{ item.year_max }}</td>
                         <td>{{ item.track_count }}</td>
+                        {% if settings.is_get_spotify_data %}
+                            <td>
+                                <form action="/spotify-lib-album-info" id="spotify_info_from_album_form" method="POST">
+                                    <input id="spotify_info_from_album" name="spotify_info_from_album" type="hidden"
+                                           value={{ item.id }}>
+                                    <button type="submit" style="background-color: #bac9ef">Spotify</button>
+                                </form>
+                            </td>
+                        {% endif %}
                         <td>{{ item.duration }}</td>
                         <td>{{ item.artist }}</td>
                         <td>{{ item.composer }}</td>
@@ -170,39 +182,6 @@
                         <td>{{ item.disc_count_total }}</td>
                         <td>{{ item.tracks_on_discs }}</td>
                     </tr>
-                    {% if settings.is_get_spotify_data %}
-                        <tr>
-                            <td></td>     <td></td>
-                            <td class="body_small"><a href="{{ item.spotify_album_url }}">{{ item.spotify_album_url }}</a></td>
-                            <td style="background-color: #dce2ed">
-                                Spotify:
-                            </td>
-                            <td>
-                                <form action="/spotify-lib-album" id="spotify_album_from_album_form" method="POST">
-                                    <input id="spotify_album_from_album" name="spotify_album_from_album" type="hidden"
-                                           value={{ item.id }}>
-                                    <button type="submit" style="background-color: #bac9ef">Album</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/spotify-lib-album-artist" id="spotify_artist_from_album_form" method="POST">
-                                    <input id="spotify_album_from_album" name="spotify_album_from_album" type="hidden"
-                                           value={{ item.id }}>
-                                    <button type="submit" style="background-color: #bac9ef">Artist</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/spotify-lib-album-info" id="spotify_info_from_album_form" method="POST">
-                                    <input id="spotify_info_from_album" name="spotify_info_from_album" type="hidden"
-                                           value={{ item.id }}>
-                                    <button type="submit" style="background-color: #bac9ef">Info</button>
-                                </form>
-                            </td>
-                            <td></td>     <td></td>
-                            <td></td>     <td></td>     <td></td>     <td></td>
-                            <td></td>     <td></td>
-                        </tr>
-                    {% endif %}
                 {% endfor %}
                 </tbody>
 		    {% else %}
