@@ -6,7 +6,7 @@ from collections import namedtuple, OrderedDict
 STR_ENCODING = 'utf-8'
 
 SETTINGS_ID = 1
-DEFAULT_IS_GET_SPOTIFY_DATA = False
+DEFAULT_IS_GET_SPOTIFY_DATA = True
 
 config_settings = {'settings': None}
 
