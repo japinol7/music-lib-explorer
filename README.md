@@ -5,11 +5,10 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 About the demo data: All the MusicLME demo metadata has been entered <br>
 manually over the years as a hobby by the author of MusicLME. 
 
-Starting with version 0.1.3, MusicLME includes a Spotify integration with <br> 
+Starting with version 1.0.3, MusicLME includes a Spotify integration with <br> 
 the Spotify REST API that the user can use to get movie data from Spotify.
 * Regarding the Spotify integration:
-  * This product uses the Spotify API but is not endorsed or certified by Spotify <br>
-    <img src="static/Spotify/logo.svg" height=50>
+  * This product uses the Spotify API but is not endorsed or certified by Spotify
   * You will need to get a Spotify API access token to use this integration: <br>
     https://developer.spotify.com/documentation/
 <br> <br>
