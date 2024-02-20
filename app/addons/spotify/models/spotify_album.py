@@ -9,6 +9,7 @@ class SpotifyAlbum:
         self.name = None
         self.artist = None
         self.artists = None
+        self.artists_str = ''
         self.uri = None
         self.url = None
         self.image_url = None

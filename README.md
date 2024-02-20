@@ -2,6 +2,21 @@
 This is a very simple Music Library Metadata Explorer.
 Its purpose is to be used as a Flask + SQLAlchemy example. 
 
+About the demo data: All the MusicLME demo metadata has been entered <br>
+manually over the years as a hobby by the author of MusicLME. 
+
+Starting with version 0.1.3, MusicLME includes a Spotify integration with <br> 
+the Spotify REST API that the user can use to get movie data from Spotify.
+* Regarding the Spotify integration:
+  * This product uses the Spotify API but is not endorsed or certified by Spotify <br>
+    <img src="static/Spotify/logo.svg" height=50>
+  * You will need to get a Spotify API access token to use this integration: <br>
+    https://developer.spotify.com/documentation/
+<br> <br>
+
+
+### The program 
+
 	Objective: Make a very simple Music Library Metadata Explorer using flask and SQLAlchemy.
     Title: Music Library Metadata Explorer
 	program: music-lib-explorer
@@ -22,9 +37,15 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 
 #### Starting with version 1.0.2 you can export the Music data to Excel
 
-#### Starting with version 1.0.3 you can activate a feature to try to open an album on Spotify
+#### Starting with version 1.0.3 you can activate the Spotify integration
+
+When activated, a "Spotify" button will appear in the song and album lists. <br>
+This button will open a view with some information about the album and the artist <br>
+and links to the album and the artist on Spotify.
 
 <img src="screenshots/screenshot5.png"> <br/> <br/>
+<img src="screenshots/screenshot6.png"> <br/> <br/>
+<img src="screenshots/screenshot7.png"> <br/> <br/>
 <br>
 
 
@@ -42,3 +63,4 @@ Its purpose is to be used as a Flask + SQLAlchemy example.
 	       6. 2. Press the [Show/Hide Import Form] button
 	       6. 3. Press the [Import data] button
 	       6. 4. Note: Once the music data is loaded into the database, you do not have to import it again.
+ 

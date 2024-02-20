@@ -34,11 +34,21 @@
             <br>
             <hr style="border-width:2px;border-color:#8097b3">
 
-            <br>
             {% if album %}
                 <div>album</div>
                 <h4>{{ album.name }}</h4>
-                <p>Release date: {{ album.release_date }}</p>
+                {%  if album.release_date %}
+                    <p>Release date: {{ album.release_date }}</p>
+                {% endif %}
+                {%  if album.artists_str and artist.name != album.artists_str %}
+                    <p>Artists: {{ album.artists_str }}</p>
+                {% endif %}
+                {%  if album.album_type != 'album' %}
+                    <p>Type: {{ album.album_type }}</p>
+                {% endif %}
+                {%  if album.total_tracks %}
+                    <p>Total tracks: {{ album.total_tracks }}</p>
+                {% endif %}
                 {%  if album.url %}
                     <br>
                     <button class="mui-btn mui-btn--raised"><a href="{{ album.url }}">Album on Spotify</a></button>

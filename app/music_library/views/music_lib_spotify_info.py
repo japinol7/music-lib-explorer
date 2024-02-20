@@ -56,5 +56,8 @@ def music_lib_spotify_info():
         return _music_lib_spotify_info_render_template(artist=artist)
 
     album = sp_music_data[3][0]
+    if artist.name != album.artist.name:
+        log.info("Album artist: %s is different from artist: %s", album.artist.name, artist.name)
+        artist = album.artist
 
     return _music_lib_spotify_info_render_template(artist=artist, album=album)

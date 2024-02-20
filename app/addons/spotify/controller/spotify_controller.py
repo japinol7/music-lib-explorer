@@ -47,6 +47,7 @@ class SpotifyController:
         self.items_len = 0
         self.albums = None
         self.artists = None
+        self.artists_str = ''
         self.error_msg = ''
         self.errors = {'error': self.error_msg}
 
@@ -197,6 +198,7 @@ class SpotifyController:
         album.name = item['name']
         album.artist = artist
         album.artists = [x['name'] for x in item['artists']]
+        album.artists_str = ', '.join(album.artists)
         album.uri = item['uri']
         album.url = item['external_urls']['spotify']
         album.image_url = item['images'] and item['images'][0]['url'] or None
