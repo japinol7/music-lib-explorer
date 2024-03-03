@@ -9,7 +9,7 @@
         <form class="settings-save-form-class" id="settings_save_form" style="background:#ced4df;max-width: 700px;"
               action="/settings_save_changes" method="POST">
             <input type=checkbox name="flags" id="is_get_spotify_data_flag" style="font-size:7px;"
-                   {{'checked="checked"' if data.is_get_spotify_data else ""}}
+                   {{'checked="checked"' if data and data.is_get_spotify_data else ""}}
                    value="is_get_spotify_data_flag">
             <label for="is_get_spotify_data_flag">Get additional data from Spotify</label>
 

@@ -2,6 +2,7 @@ import io
 from datetime import datetime
 
 from flask import render_template, send_file, request
+import xlsxwriter
 
 from app import app
 from app.config.config import (
