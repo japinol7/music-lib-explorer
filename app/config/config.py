@@ -87,7 +87,7 @@ DATE_COLUMNS = ['date_released', 'date_added', 'date_modified']
 AMOUNT_COLUMNS = []
 COLUMNS_TO_STRIP_WHITESPACE_FROM = []
 
-# Adjustments to a particular dataset. Added here for convenience
+# Adjustments to a particular dataset. Added here for convenience.
 # Remember that the xml dataset will be imported only once, just to generate the csv or json datasets
 PLAYS_TO_ADD_ALL_SONGS = 0
 FileLocationReplace = namedtuple('file_location_replace', ['old', 'new'])
