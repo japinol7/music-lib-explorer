@@ -33,6 +33,7 @@ the Spotify REST API that the user can use to get movie data from Spotify.
 <img src="screenshots/screenshot2.png"> <br/> <br/>
 <img src="screenshots/screenshot3.png"> <br/> <br/>
 <img src="screenshots/screenshot4.png"> <br/> <br/>
+<img src="screenshots/screenshot5.png"> <br/> <br/>
 
 #### Starting with version 1.0.2 you can export the Music data to Excel
 
@@ -42,9 +43,9 @@ When activated, a "Spotify" button will appear in the song and album lists. <br>
 This button will open a view with some information about the album and the artist <br>
 and links to the album and the artist on Spotify.
 
-<img src="screenshots/screenshot5.png"> <br/> <br/>
 <img src="screenshots/screenshot6.png"> <br/> <br/>
 <img src="screenshots/screenshot7.png"> <br/> <br/>
+<img src="screenshots/screenshot8.png"> <br/> <br/>
 <br>
 
 
