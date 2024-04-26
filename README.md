@@ -19,12 +19,12 @@ the Spotify REST API that the user can use to get movie data from Spotify.
 	Objective: Make a very simple Music Library Metadata Explorer using flask and SQLAlchemy.
     Title: Music Library Metadata Explorer
 	program: music-lib-explorer
-	version: 1.0.3
+	version: 1.0.4
 	author: Joan A. Pinol
 	author_nickname: japinol
 	author_gitHub: japinol7
 	author_twitter: @japinol
-	Python requires: 3.11 or greater.
+	Python requires: 3.12 or greater.
 
 
 ## Screenshots
