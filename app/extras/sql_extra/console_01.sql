@@ -33,12 +33,12 @@ select name, track_count from album order by name;
 ------------------------------------------------------------------------------
 select count(id) count from song;
 -----
---  > R: 56630
+--  > R: 56933
 
 --------------------
 select count(id) count from album;
 -----
---  > R: 4444
+--  > R: 4480
 
 --
 -- \Music\iTunes\iTunes Media\Music
@@ -100,6 +100,21 @@ select name, count(*)
     group by name
     having count(*) > 1
     order by name
+    ;
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+select s.id, s.plays, s.year, s.name, s.artist, a.name as album, a.artist as album_artist from song s
+    left join album a on s.album_id = a.id
+    where s.name like '%Alfosina y el mar%'
+    ;
+----
+-- update song set plays = 1184209 where id = 43767;
+----
+select plays, year, name from song order by plays desc limit 40;
+----
+select s.plays, s.year, s.name, s.artist, a.name as album, a.artist as album_artist from song s
+    left join album a on s.album_id = a.id
+    order by plays desc limit 40
     ;
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
