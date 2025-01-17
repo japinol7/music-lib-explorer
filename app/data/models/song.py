@@ -1,7 +1,7 @@
 import datetime
 
 import sqlalchemy
-from sqlalchemy import orm
+from sqlalchemy.orm import relationship
 
 from app.data.sqlalchemybase import SqlAlchemyBase
 
@@ -19,7 +19,7 @@ class Song(SqlAlchemyBase):
     album_id = sqlalchemy.Column(
         sqlalchemy.Integer,
         sqlalchemy.ForeignKey('album.id'))
-    album = orm.relation('Album', back_populates='songs')
+    album = relationship('Album', back_populates='songs')
 
     # Normal columns
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True, index=True)
