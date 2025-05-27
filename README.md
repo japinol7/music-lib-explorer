@@ -19,7 +19,7 @@ the Spotify REST API that the user can use to get movie data from Spotify.
 	Objective: Make a very simple Music Library Metadata Explorer using flask and SQLAlchemy.
     Title: Music Library Metadata Explorer
 	program: music-lib-explorer
-	version: 1.0.7
+	version: 1.0.8
 	author: Joan A. Pinol
 	author_nickname: japinol
 	author_gitHub: japinol7
@@ -29,10 +29,11 @@ the Spotify REST API that the user can use to get movie data from Spotify.
 
 ## Screenshots
 
-<img src="screenshots/screenshot1.png"> <br/> <br/>
-<img src="screenshots/screenshot2.png"> <br/> <br/>
-<img src="screenshots/screenshot3.png"> <br/> <br/>
-<img src="screenshots/screenshot4.png"> <br/> <br/>
+<img src="screenshots/screenshot1.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot2.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot3.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot4.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot5.png" alt=""> <br/> <br/>
 
 #### Starting with version 1.0.2 you can export the Music data to Excel
 
@@ -42,10 +43,12 @@ When activated, a "Spotify" button will appear in the song and album lists. <br>
 This button will open a view with some information about the album and the artist <br>
 and links to the album and the artist on Spotify.
 
-<img src="screenshots/screenshot5.png" alt=""> <br/> <br/>
 <img src="screenshots/screenshot6.png" alt=""> <br/> <br/>
 <img src="screenshots/screenshot7.png" alt=""> <br/> <br/>
 <img src="screenshots/screenshot8.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot9.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot10.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot11.png" alt=""> <br/> <br/>
 <br>
 
 
