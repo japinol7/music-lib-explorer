@@ -29,11 +29,11 @@ the Spotify REST API that the user can use to get movie data from Spotify.
 
 ## Screenshots
 
-<img src="screenshots/screenshot1.png" alt=""> <br/> <br/>
-<img src="screenshots/screenshot2.png" alt=""> <br/> <br/>
-<img src="screenshots/screenshot3.png" alt=""> <br/> <br/>
-<img src="screenshots/screenshot4.png" alt=""> <br/> <br/>
-<img src="screenshots/screenshot5.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot01.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot02.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot03.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot04.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot05.png" alt=""> <br/> <br/>
 
 #### Starting with version 1.0.2 you can export the Music data to Excel
 
@@ -43,12 +43,23 @@ When activated, a "Spotify" button will appear in the song and album lists. <br>
 This button will open a view with some information about the album and the artist <br>
 and links to the album and the artist on Spotify.
 
-<img src="screenshots/screenshot6.png" alt=""> <br/> <br/>
-<img src="screenshots/screenshot7.png" alt=""> <br/> <br/>
-<img src="screenshots/screenshot8.png" alt=""> <br/> <br/>
-<img src="screenshots/screenshot9.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot06.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot07.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot08.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot09.png" alt=""> <br/> <br/>
 <img src="screenshots/screenshot10.png" alt=""> <br/> <br/>
 <img src="screenshots/screenshot11.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot12.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot13.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot14.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot15.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot16.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot17.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot18.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot19.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot20.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot21.png" alt=""> <br/> <br/>
+<img src="screenshots/screenshot22.png" alt=""> <br/> <br/>
 <br>
 
 
