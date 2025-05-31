@@ -1,7 +1,7 @@
 [project]
 name = "music-lib-explorer"
 version = "1.0.8"
-description = "Add your description here"
+description = "Music Library Metadata Explorer"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
