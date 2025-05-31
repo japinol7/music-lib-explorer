@@ -1,5 +1,5 @@
 ## Music Library Metadata Explorer
-This is a very simple Music Library Metadata Explorer.
+This is a simple Music Library Metadata Explorer.
 Its purpose is to be used as a Flask + SQLAlchemy example. 
 
 About the demo data: All the MusicLME demo metadata has been entered <br>
