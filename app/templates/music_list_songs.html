@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Music Lists</h1>
+
+    <div class="body">
+        <br>
+        <form class="music-lib-form-class" id="music_list_songs_form"
+              action="/music-list-songs" method="POST" style="background:#b2c8f6;max-width: 700px;">
+        <div class="row">
+            <div class="col">
+                <p><strong>Get Current Music List Songs <br> </strong> </p>
+                <button class="submit-music-songs">Submit</button>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <div class="body">
+        <br>
+        <div class="music-lib-info">
+            <p>
+                Total songs in the current music list:
+                {%  if form_executed == 'music_list_songs_form' %}
+                    <strong>{{ songs[0] and songs[1] or 0}}</strong>. <br>
+                {% endif %}
+            </p>
+
+            <table class="mui-table mui-table--bordered">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Album Artist</th>
+                    <th>Album</th>
+                    <th>Disc #</th>
+                    <th>Track #</th>
+                    <th>Song</th>
+                    <th>Genre</th>
+                    <th>Artist</th>
+                    <th>Duration</th>
+                    <th>Year</th>
+                    <th>Play feature</th>
+                    {% if settings.is_get_spotify_data %}
+                        <th>Spotify integration</th>
+                    {% endif %}
+                    <th>Remove from Playlist</th>
+                    <th>Composer</th>
+                    <th>Grouping</th>
+                    <th>Duration (s)</th>
+                    <th>Size</th>
+                    <th>Date Released</th>
+                    <th>Bit Rate</th>
+                    <th>Sample rate</th>
+                    <th>Work</th>
+                    <th>Mov Name</th>
+                    <th>Mov #</th>
+                    <th>Mov Count</th>
+                    <th>Plays</th>
+                    <th>Comments</th>
+                    <th>Date Added</th>
+                    <th>Location</th>
+                    <th>Is UserAdded</th>
+                </tr>
+                </thead>
+                {% if songs and songs[0] %}
+                    <tbody>
+                    {% for item in songs[0] %}
+                        <tr>
+                            <td>{{ item.track_id }}</td>
+                            <td>{{ item.album.artist }}</td>
+                            <td>{{ item.album.name }}</td>
+                            <td>{{ item.disc_number }}</td>
+                            <td>{{ item.track_number }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.genre }}</td>
+                            <td>{{ item.artist }}</td>
+                            <td>{{ item.duration_rep }}</td>
+                            <td>{{ item.year }}</td>
+                            <td>
+                                <form action="/music-lib-songs" id="music_song_play_form" method="POST">
+                                    <input id="music_song_location" name="music_song_location" type="hidden"
+                                           value="{{ item.location }}">
+                                    <button type="submit">Play</button>
+                                </form>
+                            </td>
+                            {% if settings.is_get_spotify_data %}
+                                <td>
+                                    <form action="/spotify-lib-album-info" id="spotify_info_from_album_form" method="POST">
+                                        <input id="spotify_info_from_album" name="spotify_info_from_album" type="hidden"
+                                               value={{ item.album.id }}>
+                                        <button type="submit" style="background-color: #bac9ef">Spotify</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                            <td>
+                                <form action="/music-lib-songs" id="music_song_remove_to_music_list_form" method="POST">
+                                    <input id="music_song_remove_to_music_list" name="music_song_remove_to_music_list" type="hidden"
+                                           value="{{ item.id }}">
+                                    <button type="submit">Remove</button>
+                                </form>
+                            </td>
+                            <td>{{ item.composer }}</td>
+                            <td>{{ item.grouping }}</td>
+                            <td>{{ item.duration }}</td>
+                            <td>{{ item.size }}</td>
+                            <td>{{ item.date_released }}</td>
+                            <td>{{ item.bit_rate }}</td>
+                            <td>{{ item.sample_rate }}</td>
+                            <td>{{ item.work }}</td>
+                            <td>{{ item.mov_name }}</td>
+                            <td>{{ item.mov_number }}</td>
+                            <td>{{ item.mov_count }}</td>
+                            <td>{{ item.plays }}</td>
+                            <td>{{ item.comments }}</td>
+                            <td>{{ item.date_added }}</td>
+                            <td>{{ item.location }}</td>
+                            <td>{{ item.is_user_added }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                {% else %}
+                    <tbody>
+                    <tr>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>     <td></td>
+                        <td></td>     <td></td>     <td></td>
+                    </tr>
+                    </tbody>
+                {% endif %}
+            </table>
+
+        </div>
+    </div>
+{% endblock %}

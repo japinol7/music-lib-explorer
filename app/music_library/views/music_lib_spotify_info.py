@@ -1,19 +1,23 @@
-from flask import render_template, request, redirect
+from flask import render_template, request
 from app import app
 from app.data import session_factory
 
 from app.config.config import config_settings
 from app.tools.logger.logger import log
 from app.data.models.album import Album
-from app.services import album_service, data_service
+from app.services import album_service
 from app.tools.utils import setup_db
-from app.addons.spotify.controller.spotify_controller import get_spotify_data_album, get_spotify_data_artist
+from app.addons.spotify.controller.spotify_controller import (
+    get_spotify_data_album, get_spotify_data_artist,
+    )
 
 setup_db.setup_db()
 total_albums = album_service.get_total_music_albums()
 
 
-def _music_lib_spotify_info_render_template(artist=None, album=None, artist_albums=None):
+def _music_lib_spotify_info_render_template(
+        artist=None, album=None, artist_albums=None
+    ):
     return render_template(
         'music_lib_spotify_info.html',
         artist=artist,
@@ -21,7 +25,8 @@ def _music_lib_spotify_info_render_template(artist=None, album=None, artist_albu
         artist_albums=artist_albums or [],
         settings=config_settings['settings'],
         spotify_client_init=config_settings['spotify_controller']
-                            and config_settings['spotify_controller'].spotify and True or False)
+                            and config_settings['spotify_controller'].spotify
+                            and True or False)
 
 
 @app.route('/spotify-lib-album-info', methods=['GET', 'POST'])
@@ -40,7 +45,6 @@ def music_lib_spotify_info():
         return _music_lib_spotify_info_render_template()
 
     first_song = album.songs[0]
-
     sp_music_data = get_spotify_data_artist(first_song)
 
     if not sp_music_data or not sp_music_data[2] or len(sp_music_data[2]) < 1:
@@ -48,7 +52,6 @@ def music_lib_spotify_info():
         return _music_lib_spotify_info_render_template()
 
     artist = sp_music_data[2][0]
-
     sp_music_data = get_spotify_data_album(first_song)
 
     if not sp_music_data or not sp_music_data[3] or len(sp_music_data[3]) < 1:
@@ -57,7 +60,8 @@ def music_lib_spotify_info():
 
     album = sp_music_data[3][0]
     if artist.name != album.artist.name:
-        log.info("Album artist: %s is different from artist: %s", album.artist.name, artist.name)
+        log.info("Album artist: %s is different from artist: %s",
+                 album.artist.name, artist.name)
         artist = album.artist
 
     return _music_lib_spotify_info_render_template(artist=artist, album=album)

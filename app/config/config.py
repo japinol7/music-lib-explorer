@@ -5,6 +5,10 @@ from collections import namedtuple, OrderedDict
 
 STR_ENCODING = 'utf-8'
 
+MUSIC_LIST_NAME_DEFAULT = "Default Music List"
+MUSIC_LIST_ID_DEFAULT = 1
+MUSIC_LIST_X_ID_DEFAULT = "music_list_01"
+
 SETTINGS_ID = 1
 DEFAULT_IS_GET_SPOTIFY_DATA = True
 

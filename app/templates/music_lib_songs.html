@@ -172,6 +172,7 @@
                 {% if settings.is_get_spotify_data %}
                     <th>Spotify integration</th>
                 {% endif %}
+                <th>Add 2 Playlist</th>
                 <th>Composer</th>
                 <th>Grouping</th>
                 <th>Duration (s)</th>
@@ -220,6 +221,13 @@
                                 </form>
                             </td>
                         {% endif %}
+                        <td>
+                            <form action="/music-lib-songs" id="music_song_add_to_music_list_form" method="POST">
+                                <input id="music_song_add_to_music_list" name="music_song_add_to_music_list" type="hidden"
+                                       value="{{ item.id }}">
+                                <button type="submit">Add</button>
+                            </form>
+                        </td>
                         <td>{{ item.composer }}</td>
                         <td>{{ item.grouping }}</td>
                         <td>{{ item.duration }}</td>

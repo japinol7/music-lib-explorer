@@ -20,6 +20,10 @@ class Song(SqlAlchemyBase):
         sqlalchemy.Integer,
         sqlalchemy.ForeignKey('album.id'))
     album = relationship('Album', back_populates='songs')
+    music_list_id = sqlalchemy.Column(
+        sqlalchemy.Integer,
+        sqlalchemy.ForeignKey('music_list.id'))
+    music_list = relationship('MusicList', back_populates='songs')
 
     # Normal columns
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True, index=True)

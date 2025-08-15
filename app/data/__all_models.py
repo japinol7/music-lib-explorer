@@ -5,4 +5,6 @@ import app.data.models.album
 # noinspection PyUnresolvedReferences
 import app.data.models.user
 # noinspection PyUnresolvedReferences
+import app.data.models.music_list
+# noinspection PyUnresolvedReferences
 import app.data.models.settings

@@ -31,8 +31,9 @@ def music_lib_albums():
         end_date = request.form.get('music_album_end_date') or start_date
         album_match_method = request.form.get('music_album_title_method')
         order_by = request.form.get('music_album_order_by')
-        albums = get_music_albums(name, artist, album, album_artist, composer, genre, limit,
-                                  start_date, end_date, album_match_method, order_by)
+        albums = get_music_albums(
+            name, artist, album, album_artist, composer, genre, limit,
+            start_date, end_date, album_match_method, order_by)
         form_executed = 'music_lib_form'
     elif request.method == 'POST' and 'import_data_method' in request.form:
         import_data.import_if_empty()
@@ -42,10 +43,11 @@ def music_lib_albums():
         albums = (('', ''), len(albums_res), {}, albums_res, {'error': error})
         form_executed = 'music_lib_import_data_form'
 
-    return render_template('music_lib_albums.html',
-                           albums=albums,
-                           settings=config_settings['settings'],
-                           form_executed=form_executed)
+    return render_template(
+        'music_lib_albums.html',
+        albums=albums,
+        settings=config_settings['settings'],
+        form_executed=form_executed)
 
 
 def get_music_albums(name, artist, album, album_artist, composer, genre, limit,
@@ -88,10 +90,12 @@ def spotify_lib_album():
         get_spotify_data_album(first_song)
 
         if not first_song.spotify_album_url:
-            log.warning("No Spotify album found for album: %s and artist: %s", album.name, album.artist)
+            log.warning("No Spotify album found for album: %s and artist: %s",
+                        album.name, album.artist)
             return redirect('/music-lib-albums')
 
         return redirect(first_song.spotify_album_url)
+    return None
 
 
 @app.route('/spotify-lib-album-artist', methods=['POST'])
@@ -118,3 +122,4 @@ def spotify_lib_album_artist():
             return redirect('/music-lib-albums')
 
         return redirect(first_song.spotify_artist_url)
+    return None
