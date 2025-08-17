@@ -62,8 +62,8 @@ def music_lib_songs():
         session.close()
 
         form_executed = 'music_song_add_to_music_list_form'
-    elif request.method == 'POST' and 'music_song_remove_to_music_list' in request.form:
-        song_id = request.form.get('music_song_remove_to_music_list')
+    elif request.method == 'POST' and 'music_song_remove_from_music_list' in request.form:
+        song_id = request.form.get('music_song_remove_from_music_list')
         log.info(f"Remove from the active Music List, the Song with id: {song_id}")
 
         session = session_factory.create_session()
@@ -74,7 +74,7 @@ def music_lib_songs():
             session.commit()
         session.close()
 
-        form_executed = 'music_song_remove_to_music_list_form'
+        form_executed = 'music_song_remove_from_music_list_form'
     elif request.method == 'POST' and 'music_song_location' in request.form:
         song_uri = request.form.get('music_song_location')
         file_path = unquote(urlparse(song_uri).path)[1:]
