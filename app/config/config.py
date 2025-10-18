@@ -94,8 +94,16 @@ COLUMNS_TO_STRIP_WHITESPACE_FROM = []
 # Adjustments to a particular dataset. Added here for convenience.
 # Remember that the xml dataset will be imported only once, just to generate the csv or json datasets
 PLAYS_TO_ADD_ALL_SONGS = 0
+
+# Songs media files location substitution adapted here
+# from my original Windows system to my new linux system
 FileLocationReplace = namedtuple('file_location_replace', ['old', 'new'])
-FILE_LOCATION_REPLACE = FileLocationReplace('', '')
+FILE_LOCATION_REPLACE = FileLocationReplace(
+    "localhost/E:/Music", "localhost/mnt/media/music/Music")
+FILE_LOCATION_TWO_REPLACE = FileLocationReplace(
+    "localhost/I:/Music", "localhost/mnt/media/music/Music_i")
+IS_FILE_LOCATION_REPLACE_WIN_SLASH = True
+
 ALLOW_TO_IMPORT_SEVERAL_FILES = False
 IS_USER_ADDED = False
 # End Adjustments to a particular dataset

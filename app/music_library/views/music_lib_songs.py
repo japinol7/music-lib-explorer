@@ -77,10 +77,13 @@ def music_lib_songs():
         form_executed = 'music_song_remove_from_music_list_form'
     elif request.method == 'POST' and 'music_song_location' in request.form:
         song_uri = request.form.get('music_song_location')
-        file_path = unquote(urlparse(song_uri).path)[1:]
+        file_path = unquote(urlparse(song_uri).path)
+
         file_path_obj = Path(file_path)
-        if file_path_obj.is_file():
-            webbrowser.open(file_path)
+        is_file = file_path_obj.is_file()
+        log.info(f"Play song. Is file: {is_file}. File path: {file_path}")
+        if is_file:
+            webbrowser.open(song_uri)
         form_executed = 'music_song_play_form'
 
     return render_template(

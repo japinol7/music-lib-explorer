@@ -141,12 +141,19 @@ def __import_music_songs():
             song.bit_rate = row['bit_rate']
             song.sample_rate = row['sample_rate']
             song.comments = row['comments']
+
+            song.location = row['location']
             if row['location'] and config.FILE_LOCATION_REPLACE.old:
-                song.location = row['location'].replace(
+                song.location = song.location.replace(
                     config.FILE_LOCATION_REPLACE.old,
                     config.FILE_LOCATION_REPLACE.new)
-            else:
-                song.location = row['location']
+            if row['location'] and config.FILE_LOCATION_TWO_REPLACE.old:
+                song.location = song.location.replace(
+                    config.FILE_LOCATION_TWO_REPLACE.old,
+                    config.FILE_LOCATION_TWO_REPLACE.new)
+            if config.IS_FILE_LOCATION_REPLACE_WIN_SLASH:
+                song.location = song.location.replace('\\', '/')
+
             song.persistent_id = row['persistent_id'] if row['persistent_id'] else None
             song.track_id = row['track_id']
             song.file_folder_count = row['file_folder_count']
