@@ -176,7 +176,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e8
 
 [[package]]
 name = "music-lib-explorer"
-version = "1.0.9"
+version = "1.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "click" },

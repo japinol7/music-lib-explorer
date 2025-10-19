@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 from urllib.parse import unquote, urlparse
 import webbrowser
 
@@ -6,8 +7,9 @@ from flask import render_template, request, redirect
 from app import app
 from app.data import session_factory
 from app.data.models.music_list import MusicList
+from app.data.models.settings import Settings
 
-from app.config.config import config_settings
+from app.config.config import config_settings, SETTINGS_ID
 from app.tools.logger.logger import log
 from app.data.models.song import Song
 from app.services import data_service, song_service
@@ -82,8 +84,15 @@ def music_lib_songs():
         file_path_obj = Path(file_path)
         is_file = file_path_obj.is_file()
         log.info(f"Play song. Is file: {is_file}. File path: {file_path}")
-        if is_file:
+
+        session = session_factory.create_session()
+        settings = session.get(Settings, SETTINGS_ID)
+
+        if is_file and settings.is_use_vlc_to_play_songs:
+            subprocess.Popen(["vlc", file_path])
+        elif is_file:
             webbrowser.open(song_uri)
+
         form_executed = 'music_song_play_form'
 
     return render_template(

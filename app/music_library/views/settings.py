@@ -33,10 +33,12 @@ def settings_view():
 @app.route('/settings_save_changes', methods=['POST'])
 def settings_save_changes():
     is_get_spotify_data = 'is_get_spotify_data_flag' in request.form.getlist('flags')
+    is_use_vlc_to_play_songs = 'is_use_vlc_to_play_songs_flag' in request.form.getlist('flags')
     session = session_factory.create_session()
     settings = session.get(Settings, SETTINGS_ID)
     if settings:
         settings.is_get_spotify_data = is_get_spotify_data
+        settings.is_use_vlc_to_play_songs = is_use_vlc_to_play_songs
         session.commit()
         update_config_settings(session, Settings)
 

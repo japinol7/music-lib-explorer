@@ -11,6 +11,7 @@ MUSIC_LIST_X_ID_DEFAULT = "music_list_01"
 
 SETTINGS_ID = 1
 DEFAULT_IS_GET_SPOTIFY_DATA = True
+DEFAULT_IS_USE_VLC_TO_PLAY_SONGS= False
 
 config_settings = {'settings': None}
 
@@ -173,6 +174,7 @@ def update_config_settings(session, settings_model):
         settings = settings_model()
         settings.id = SETTINGS_ID
         settings.is_get_spotify_data = DEFAULT_IS_GET_SPOTIFY_DATA
+        settings.is_use_vlc_to_play_songs = DEFAULT_IS_USE_VLC_TO_PLAY_SONGS
         session.add(settings)
         session.commit()
 

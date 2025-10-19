@@ -13,6 +13,11 @@
                    value="is_get_spotify_data_flag">
             <label for="is_get_spotify_data_flag">Get additional data from Spotify</label>
 
+            <input type=checkbox name="flags" id="is_use_vlc_to_play_songs_flag" style="font-size:7px;"
+                    {{'checked="checked"' if data and data.is_use_vlc_to_play_songs else ""}}
+                   value="is_use_vlc_to_play_songs_flag">
+            <label for="is_use_vlc_to_play_songs_flag">Use VLC to play songs</label>
+
             <p> <br>
             <button class="submit-settings-save">Save Settings Changes</button>
             <p>

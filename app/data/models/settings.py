@@ -11,9 +11,11 @@ class Settings(SqlAlchemyBase):
 
     # Normal columns
     is_get_spotify_data = sqlalchemy.Column(sqlalchemy.Boolean)
+    is_use_vlc_to_play_songs = sqlalchemy.Column(sqlalchemy.Boolean)
     created = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True), server_default=func.now())
     updated = sqlalchemy.Column(sqlalchemy.DateTime(timezone=True), onupdate=func.now())
 
     def __repr__(self):
         return f"Settings(id={self.id!r}, " \
-               f"is_get_spotify_data={self.is_get_spotify_data!r})"
+               f"is_get_spotify_data={self.is_get_spotify_data!r}, " \
+               f"is_use_vlc_to_play_songs={self.is_use_vlc_to_play_songs!r})"
